@@ -20,7 +20,7 @@ const login = () => {
       <Header />
       <div className="flex flex-col items-center justify-center flex-grow">
         <ErrorAlert value={error} />
-        <div className="card flex-shrink-0 w-full max-w-sm bg-base-100 h-3/4">
+        <div className="card flex-shrink-0 w-full max-w-sm bg-base-100 sm:h-fit h-3/4">
           <div className="card-body">
             <div className="form-control">
               <label className="label">

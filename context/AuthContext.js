@@ -1,11 +1,11 @@
 import React, { createContext, useState, useEffect } from "react";
-import { app, auth, firestore } from "../firebase/firebaseConfig";
 import {
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
+import { auth } from "../firebase/firebaseConfig";
 
 const AuthContext = createContext();
 
@@ -15,22 +15,23 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
+    // const newAuth = getAuth(app);
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUser(user);
+      } else {
+        setCurrentUser(null);
+      }
       setLoading(false);
     });
-
-    return () => {
-      unsubscribe();
-    };
   }, []);
 
-  const reloadUser = () => getUser().reload();
+  const reloadUser = async () => await currentUser.reload();
 
   const reload = async () => {
     try {
-      await reloadUser();
-      const user = getUser();
+      reloadUser();
+      const user = currentUser;
       setCurrentUser(user);
     } catch (error) {}
     return reload;
@@ -49,7 +50,7 @@ export const AuthProvider = ({ children }) => {
     setError(null);
   };
 
-  const handleLogin = async (email, password) => {
+  const handleLogin = (email, password) => {
     if (email && password) {
       signInWithEmailAndPassword(auth, email, password).catch((err) => {
         if (err.code === "auth/invalid-email") {
