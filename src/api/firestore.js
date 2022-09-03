@@ -1,4 +1,4 @@
-import { db } from "../firebase/firebaseConfig";
+import { db } from "../../firebase/firebaseConfig";
 import {
   collection,
   getDocs,
@@ -24,7 +24,7 @@ import {
   VALUE_FIELD,
   DESC,
 } from "../consts";
-import { auth } from "../firebase/firebaseConfig";
+import { auth } from "../../firebase/firebaseConfig";
 import { getTodaysDate, getUserDocumentIdForImage } from "../utils";
 
 const checkIfUserDocumentExists = async (collection, imageData) => {
@@ -137,7 +137,7 @@ const getQueryForImageRatings = (imageData) => {
   return ratings_query;
 };
 
-export const fetchLiveRatingsSnapshot = (imageData, setResults) => {
+export const fetchLiveRatingsSnapshot = (imageData, handleResult) => {
   const query = getQueryForImageRatings(imageData);
   const subscription = onSnapshot(
     query,
@@ -146,7 +146,7 @@ export const fetchLiveRatingsSnapshot = (imageData, setResults) => {
       snapshot.forEach((doc) => {
         ratingsList.push(doc.data());
       });
-      setResults(ratingsList);
+      handleResult(ratingsList);
     },
     (onError) => {
       console.log(onError);
