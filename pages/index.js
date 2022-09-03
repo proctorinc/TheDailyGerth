@@ -3,8 +3,8 @@ import {
   fetchImageCount,
   fetchTodaysImage,
   fetchImagesAfter,
-  getTodaysDate,
 } from "../api/firestore";
+import { getTodaysDate } from "../utils";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useScrollSnap from "react-use-scroll-snap";
 import AuthRoute from "../auth/AuthRoute";
@@ -63,7 +63,7 @@ export default function Home() {
   return (
     <AuthRoute>
       <Header />
-      <CheckLoading isLoading={loading} renderOnLoad={<Spinner size="lg" />}>
+      <CheckLoading isLoading={loading} renderOnLoading={<Spinner size="lg" />}>
         <CountdownTimer />
         <InfiniteScroll
           className="pb-48 flex-grow h-screen"

@@ -13,23 +13,32 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { auth } from "../firebase/firebaseConfig";
+import { getTodaysDate, getUserDocumentIdForImage } from "../utils";
 
 const IMAGES_PER_PAGE = 2;
 const LIMIT_ONE = 1;
 
-export const getTodaysDate = () => {
-  return new Date(Date.now())
-    .toISOString("en-US", {
-      year: "2-digit",
-      month: "2-digit",
-      day: "2-digit",
-    })
-    .split("T")[0];
-};
+const IMAGES_COLLECTION = "images";
+const RATINGS_COLLECTION = "ratings";
+const FAVORITES_COLLECTION = "favorites";
+
+const checkIfUserDocumentExists = (collection, imageData) => {
+  const date = imageData.date;
+  const username = "MattyP"; //auth.currentUser.username;
+  const docRef = doc(db, collection, `${date}-${username}`);
+  const querySnapshot = await getDoc(docRef);
+
+  return !!querySnapshot.exists();
+}
+
+const deleteDocumentFromCollection = (collection, imageData) => {
+  const docRef = doc(db, collection, getUserDocumentIdForImage(imageData));
+  await deleteDoc(docRef);
+}
 
 export const fetchImageCount = async () => {
   const today = getTodaysDate();
-  const imagesRef = collection(db, "images");
+  const imagesRef = collection(db, IMAGES_COLLECTION);
   const q = query(
     imagesRef,
     where("date", "<=", today),
@@ -42,7 +51,7 @@ export const fetchImageCount = async () => {
 
 export const fetchTodaysImage = async () => {
   const today = getTodaysDate();
-  const imagesRef = collection(db, "images");
+  const imagesRef = collection(db, IMAGES_COLLECTION);
   const q = query(imagesRef, where("date", "==", today), limit(LIMIT_ONE));
   const querySnapshot = await getDocs(q);
 
@@ -57,7 +66,7 @@ export const fetchTodaysImage = async () => {
 export const fetchImagesAfter = async (imageData) => {
   const today = getTodaysDate();
   const lastDate = imageData.date;
-  const imagesRef = collection(db, "images");
+  const imagesRef = collection(db, IMAGES_COLLECTION);
   const q = query(
     imagesRef,
     where("date", "<", today),
@@ -78,8 +87,8 @@ export const fetchImagesAfter = async (imageData) => {
 export const setImageAsFavorite = (imageData) => {
   const date = imageData.date;
   const username = "MattyP"; //auth.currentUser.username;
-  const ratingsRef = doc(db, "favorites", `${date}-${username}`);
-  setDoc(ratingsRef, {
+  const docRef = doc(db, FAVORITES_COLLECTION, `${date}-${username}`);
+  setDoc(docRef, {
     username: username,
     image_date: date,
   });
@@ -88,8 +97,8 @@ export const setImageAsFavorite = (imageData) => {
 export const setImageRating = (imageData, rating) => {
   const date = imageData.date;
   const username = "MattyP"; //auth.currentUser.username;
-  const ratingsRef = doc(db, "ratings", `${date}-${username}`);
-  setDoc(ratingsRef, {
+  const docRef = doc(db, RATINGS_COLLECTION, `${date}-${username}`);
+  setDoc(docRef, {
     value: rating,
     username: username,
     image_date: date,
@@ -97,33 +106,17 @@ export const setImageRating = (imageData, rating) => {
 };
 
 export const fetchHasRatedImage = async (imageData) => {
-  const date = imageData.date;
-  const username = "MattyP"; //auth.currentUser.username;
-  const ratingsRef = doc(db, "ratings", `${date}-${username}`);
-  const querySnapshot = await getDoc(ratingsRef);
-
-  return !!querySnapshot.exists();
+  return checkIfUserDocumentExists(RATINGS_COLLECTION, imageData);
 };
 
 export const fetchHasFavoritedImage = async (imageData) => {
-  const date = imageData.date;
-  const username = "MattyP"; //auth.currentUser.username;
-  const favoritesRef = doc(db, "favorites", `${date}-${username}`);
-  const querySnapshot = await getDoc(favoritesRef);
-
-  return !!querySnapshot.exists();
+  return checkIfUserDocumentExists(FAVORITES_COLLECTION, imageData);
 };
 
 export const removeFavoritedImage = async (imageData) => {
-  const date = imageData.date;
-  const username = "MattyP"; //auth.currentUser.username;
-  const favoritesRef = doc(db, "favorites", `${date}-${username}`);
-  await deleteDoc(favoritesRef);
+  deleteDocumentFromCollection(FAVORITES_COLLECTION, imageData);
 };
 
 export const removeImageRating = async (imageData) => {
-  const date = imageData.date;
-  const username = "MattyP"; //auth.currentUser.username;
-  const ratingsRef = doc(db, "ratings", `${date}-${username}`);
-  await deleteDoc(ratingsRef);
+  deleteDocumentFromCollection(RATINGS_COLLECTION, imageData)
 };

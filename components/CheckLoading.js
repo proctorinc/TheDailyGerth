@@ -1,6 +1,6 @@
-const CheckLoading = ({ children, isLoading, renderOnLoad }) => {
+const CheckLoading = ({ children, isLoading, renderOnLoading }) => {
   if (isLoading) {
-    return <>{renderOnLoad}</>;
+    return <>{renderOnLoading}</>;
   } else {
     return <>{children}</>;
   }

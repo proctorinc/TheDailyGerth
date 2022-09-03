@@ -27,16 +27,7 @@ import {
   fetchHasFavoritedImage,
 } from "../api/firestore";
 import CheckLoading from "./CheckLoading";
-
-const prettyDateFormat = (dateString) => {
-  const date = new Date(`${dateString}T07:00:00.000Z`);
-  return date.toLocaleString("en-US", {
-    month: "long",
-    day: "2-digit",
-    year: "numeric",
-    time: "numeric",
-  });
-};
+import { prettyDateFormat } from "./utils";
 
 const ImageCard = ({ image }) => {
   const [ratings, setRatings] = useState([]);
@@ -120,6 +111,7 @@ const ImageCard = ({ image }) => {
         <div className="flex float-left">
           {openRatings && (
             <Rating
+              initialRating={rating}
               className="pt-2 pl-3"
               fractions={2}
               onChange={(value) => {
@@ -235,7 +227,7 @@ const ImageCard = ({ image }) => {
           <h1 className="collapse-title font-light hidden peer-checked:inline">
             <CheckLoading
               isLoading={loading}
-              renderOnLoad={<Spinner size={"sm"} />}
+              renderOnLoading={<Spinner size={"sm"} />}
             >
               <div className="badge badge-outline">
                 {ratings.length == 0 ? "no ratings" : "ratings"}
