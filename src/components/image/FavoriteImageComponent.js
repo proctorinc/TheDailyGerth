@@ -3,7 +3,7 @@ import {
   setImageAsFavorite,
   removeFavoritedImage,
   fetchHasFavoritedImage,
-} from "../api/firestore";
+} from "../../api/firestore";
 import { Star } from "phosphor-react";
 
 const FavoriteImageComponent = ({ image }) => {

@@ -15,7 +15,6 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    // const newAuth = getAuth(app);
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setCurrentUser(user);

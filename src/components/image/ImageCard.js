@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { ChatCircle, PaperPlaneTilt } from "phosphor-react";
-import { prettyDateFormat } from "../utils";
+import { prettyDateFormat } from "../../utils";
 import RateImageComponent from "./RateImageComponent";
 import ImageRatingsCollapsible from "./ImageRatingsCollapsible";
 import FavoriteImageComponent from "./FavoriteImageComponent";

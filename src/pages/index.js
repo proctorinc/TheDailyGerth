@@ -7,12 +7,12 @@ import {
 import { getTodaysDate } from "../utils";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useScrollSnap from "react-use-scroll-snap";
-import AuthRoute from "../auth/AuthRoute";
-import CheckLoading from "../components/CheckLoading";
-import Header from "../components/Header";
-import Spinner from "../components/Spinner";
-import ImageCard from "../components/ImageCard";
-import CountdownTimer from "../components/CountdownTimer";
+import AuthRoute from "../components/flow/AuthRoute";
+import CheckLoading from "../components/flow/CheckLoading";
+import Header from "../components/ui/Header";
+import Spinner from "../components/ui/Spinner";
+import ImageCard from "../components/image/ImageCard";
+import CountdownTimer from "../components/home/CountdownTimer";
 
 export default function Home() {
   const [images, setImages] = useState([]);

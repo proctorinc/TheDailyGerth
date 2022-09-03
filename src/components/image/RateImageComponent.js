@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Heart, CheckCircle, XCircle } from "phosphor-react";
 import Rating from "react-rating";
-import { COLOR_PINK } from "../consts";
-import { setImageRating, fetchHasRatedImage } from "../api/firestore";
+import { COLOR_PINK } from "../../consts";
+import { setImageRating, fetchHasRatedImage } from "../../api/firestore";
 
 const RateImageComponent = ({ image }) => {
   const [rating, setRating] = useState(0);

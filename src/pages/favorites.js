@@ -1,5 +1,5 @@
 import { useAuth } from "../hooks/useAuth";
-import AuthRoute from "../../auth/AuthRoute";
+import AuthRoute from "../components/flow/AuthRoute";
 import Header from "../../components/Header";
 
 const favorites = () => {

@@ -1,4 +1,3 @@
-import Spinner from "./Spinner";
 import { useState } from "react";
 
 const CountdownTimer = ({ isScreenLoading }) => {
