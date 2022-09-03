@@ -11,38 +11,43 @@ import {
   setDoc,
   getDoc,
   deleteDoc,
+  onSnapshot,
 } from "firebase/firestore";
+import {
+  IMAGES_PER_PAGE,
+  LIMIT_ONE,
+  IMAGES_COLLECTION,
+  RATINGS_COLLECTION,
+  FAVORITES_COLLECTION,
+  DATE_FIELD,
+  IMAGE_DATE_FIELD,
+  VALUE_FIELD,
+  DESC,
+} from "../consts";
 import { auth } from "../firebase/firebaseConfig";
 import { getTodaysDate, getUserDocumentIdForImage } from "../utils";
 
-const IMAGES_PER_PAGE = 2;
-const LIMIT_ONE = 1;
-
-const IMAGES_COLLECTION = "images";
-const RATINGS_COLLECTION = "ratings";
-const FAVORITES_COLLECTION = "favorites";
-
-const checkIfUserDocumentExists = (collection, imageData) => {
+const checkIfUserDocumentExists = async (collection, imageData) => {
   const date = imageData.date;
   const username = "MattyP"; //auth.currentUser.username;
   const docRef = doc(db, collection, `${date}-${username}`);
   const querySnapshot = await getDoc(docRef);
 
   return !!querySnapshot.exists();
-}
+};
 
-const deleteDocumentFromCollection = (collection, imageData) => {
+const deleteDocumentFromCollection = async (collection, imageData) => {
   const docRef = doc(db, collection, getUserDocumentIdForImage(imageData));
   await deleteDoc(docRef);
-}
+};
 
 export const fetchImageCount = async () => {
   const today = getTodaysDate();
   const imagesRef = collection(db, IMAGES_COLLECTION);
   const q = query(
     imagesRef,
-    where("date", "<=", today),
-    orderBy("date", "desc")
+    where(DATE_FIELD, "<=", today),
+    orderBy(DATE_FIELD, DESC)
   );
   const querySnapshot = await getDocs(q);
 
@@ -52,7 +57,7 @@ export const fetchImageCount = async () => {
 export const fetchTodaysImage = async () => {
   const today = getTodaysDate();
   const imagesRef = collection(db, IMAGES_COLLECTION);
-  const q = query(imagesRef, where("date", "==", today), limit(LIMIT_ONE));
+  const q = query(imagesRef, where(DATE_FIELD, "==", today), limit(LIMIT_ONE));
   const querySnapshot = await getDocs(q);
 
   var image = null;
@@ -69,8 +74,8 @@ export const fetchImagesAfter = async (imageData) => {
   const imagesRef = collection(db, IMAGES_COLLECTION);
   const q = query(
     imagesRef,
-    where("date", "<", today),
-    orderBy("date", "desc"),
+    where(DATE_FIELD, "<", today),
+    orderBy(DATE_FIELD, DESC),
     startAfter(lastDate),
     limit(IMAGES_PER_PAGE)
   );
@@ -106,17 +111,47 @@ export const setImageRating = (imageData, rating) => {
 };
 
 export const fetchHasRatedImage = async (imageData) => {
-  return checkIfUserDocumentExists(RATINGS_COLLECTION, imageData);
+  return await checkIfUserDocumentExists(RATINGS_COLLECTION, imageData);
 };
 
 export const fetchHasFavoritedImage = async (imageData) => {
-  return checkIfUserDocumentExists(FAVORITES_COLLECTION, imageData);
+  return await checkIfUserDocumentExists(FAVORITES_COLLECTION, imageData);
 };
 
+// Function not being used currently
 export const removeFavoritedImage = async (imageData) => {
   deleteDocumentFromCollection(FAVORITES_COLLECTION, imageData);
 };
 
 export const removeImageRating = async (imageData) => {
-  deleteDocumentFromCollection(RATINGS_COLLECTION, imageData)
+  deleteDocumentFromCollection(RATINGS_COLLECTION, imageData);
+};
+
+const getQueryForImageRatings = (imageData) => {
+  const ratingsRef = collection(db, RATINGS_COLLECTION);
+  const ratings_query = query(
+    ratingsRef,
+    where(IMAGE_DATE_FIELD, "==", imageData.date),
+    orderBy(VALUE_FIELD, DESC)
+  );
+  return ratings_query;
+};
+
+export const fetchLiveRatingsSnapshot = (imageData, setResults) => {
+  const query = getQueryForImageRatings(imageData);
+  const subscription = onSnapshot(
+    query,
+    (snapshot) => {
+      const ratingsList = [];
+      snapshot.forEach((doc) => {
+        ratingsList.push(doc.data());
+      });
+      setResults(ratingsList);
+    },
+    (onError) => {
+      console.log(onError);
+    }
+  );
+
+  return subscription;
 };
