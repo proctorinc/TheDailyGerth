@@ -2,8 +2,9 @@ import { useState } from "react";
 import Header from "../components/Header";
 import { useAuth } from "../hooks/useAuth";
 import ErrorAlert from "../components/ErrorAlert";
+import Link from "next/link";
 
-const activateAccount = () => {
+const ActivateAccount = () => {
   const [email, setEmail] = useState("");
   const { sendActivationEmail, error } = useAuth();
 
@@ -26,9 +27,9 @@ const activateAccount = () => {
                 onChange={(event) => setEmail(event.target.value)}
               />
               <label className="label">
-                <a href="/login" className="label-text-alt link link-hover">
+                <Link href="/login" className="label-text-alt link link-hover">
                   Already have an account? Login
-                </a>
+                </Link>
               </label>
             </div>
             <div htmlFor="my-modal" className="form-control mt-6">
@@ -68,4 +69,4 @@ const activateAccount = () => {
   );
 };
 
-export default activateAccount;
+export default ActivateAccount;

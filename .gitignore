@@ -37,3 +37,7 @@ next-env.d.ts
 
 # firebase
 firebaseConfig.js
+
+.firebase/*
+.github/*
+.firebaserc

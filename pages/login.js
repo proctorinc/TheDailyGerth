@@ -3,8 +3,9 @@ import Header from "../components/Header";
 import { useAuth } from "../hooks/useAuth";
 import Router from "next/router";
 import ErrorAlert from "../components/ErrorAlert";
+import Link from "next/link";
 
-const login = () => {
+const Login = () => {
   const { currentUser, handleLogin, error, clearError, loading } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -46,9 +47,12 @@ const login = () => {
                 onChange={(event) => setPassword(event.target.value)}
               />
               <label className="label">
-                <a href="/activate" className="label-text-alt link link-hover">
+                <Link
+                  href="/activate"
+                  className="label-text-alt link link-hover"
+                >
                   First time? Activate your account
-                </a>
+                </Link>
               </label>
             </div>
             <div className="form-control mt-6">
@@ -69,4 +73,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;

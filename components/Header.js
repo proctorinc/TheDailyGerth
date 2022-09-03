@@ -1,5 +1,5 @@
-import Router from "next/router";
 import { useAuth } from "../hooks/useAuth";
+import Link from "next/link";
 
 const Header = () => {
   const { handleLogout, currentUser, clearError } = useAuth();
@@ -29,64 +29,61 @@ const Header = () => {
             className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 shadow-xl rounded-box w-52"
           >
             {currentUser ? (
-              <li>
-                <a onClick={() => handleLogout()}>logout</a>
-              </li>
+              <>
+                <li>
+                  <a onClick={() => handleLogout()}>logout</a>
+                </li>
+                <li>
+                  <Link href="/favorites">
+                    <a onClick={() => clearError()}>Favorites</a>
+                  </Link>
+                </li>
+              </>
             ) : (
               <>
                 <li>
-                  <a
-                    onClick={() => {
-                      clearError();
-                      Router.push("/login");
-                    }}
-                  >
-                    login
-                  </a>
+                  <Link href="/login">
+                    <a onClick={() => clearError()}>login</a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    onClick={() => {
-                      clearError();
-                      Router.push("/activate");
-                    }}
-                  >
-                    activate
-                  </a>
+                  <Link href="/activate">
+                    <a onClick={() => clearError()}>activate</a>
+                  </Link>
                 </li>
               </>
             )}
           </ul>
         </div>
-        <a className="btn btn-ghost normal-case text-xl">The Daily Gerth</a>
+        <Link href="/">
+          <a className="btn btn-ghost normal-case text-xl">The Daily Gerth</a>
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal p-0">
           {currentUser ? (
-            <li>
-              <a onClick={() => handleLogout()}>logout</a>
-            </li>
+            <>
+              <li>
+                <a onClick={() => handleLogout()}>logout</a>
+              </li>
+
+              <li>
+                <Link href="/favorites">
+                  <a onClick={() => clearError()}>Favorites</a>
+                </Link>
+              </li>
+            </>
           ) : (
             <>
               <li>
-                <a
-                  onClick={() => {
-                    clearError();
-                    Router.push("/login");
-                  }}
-                >
-                  login
-                </a>
+                <Link href="/login">
+                  <a onClick={() => clearError()}>login</a>
+                </Link>
               </li>
               <li>
-                <a
-                  onClick={() => {
-                    clearError();
-                    Router.push("/activate");
-                  }}
-                >
-                  activate
-                </a>
+                <Link href="/activate">
+                  <a onClick={() => clearError()}>activate</a>
+                </Link>
               </li>
             </>
           )}

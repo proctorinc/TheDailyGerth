@@ -1,9 +1,18 @@
-const Spinner = () => {
+const Spinner = ({ size }) => {
+  var spinnerStyle = "mr-2 text-primary animate-spin fill-base-100";
+
+  if (size === "lg") {
+    spinnerStyle += " w-12 h-12";
+  } else if (size === "sm") {
+    spinnerStyle += " w-5 h-5";
+  } else {
+    spinnerStyle += " w-8 h-8";
+  }
   return (
     <div className="flex w-full justify-center pt-3 pb-1">
       <svg
         aria-hidden="true"
-        className="mr-2 w-8 h-8 text-primary animate-spin fill-base-100"
+        className={spinnerStyle}
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
