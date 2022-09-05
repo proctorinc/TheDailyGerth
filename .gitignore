@@ -41,3 +41,6 @@ firebaseConfig.js
 .firebase/*
 .github/*
 .firebaserc
+
+server.js
+cert/*

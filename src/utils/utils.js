@@ -1,3 +1,4 @@
+import { auth } from "@firebase/firebaseConfig";
 export const prettyDateFormat = (dateString) => {
   const date = new Date(`${dateString}T07:00:00.000Z`);
   return date.toLocaleString("en-US", {
@@ -20,7 +21,7 @@ export const getTodaysDate = () => {
 
 export const getUserDocumentIdForImage = (imageData) => {
   const date = imageData.date;
-  const username = "MattyP"; //auth.currentUser.username;
+  const username = auth.currentUser.displayName;
 
   return `${date}-${username}`;
 };

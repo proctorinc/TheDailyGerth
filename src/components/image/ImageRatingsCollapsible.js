@@ -1,9 +1,9 @@
-import CheckLoading from "../flow/CheckLoading";
+import CheckLoading from "@components/flow/CheckLoading";
 import { Heart } from "phosphor-react";
 import Rating from "react-rating";
-import Spinner from "../ui/Spinner";
-import useRatingsSnapshot from "../../hooks/useRatingsSnapshot";
-import { COLOR_PINK } from "../../consts";
+import Spinner from "@components/ui/Spinner";
+import useRatingsSnapshot from "@hooks/useRatingsSnapshot";
+import { COLOR_PINK } from "@consts/consts";
 
 const ImageRatingsCollapsible = ({ image }) => {
   // Warning: ratings are loaded immediately and there is no wait for it to be opened first

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { ChatCircle, PaperPlaneTilt } from "phosphor-react";
-import { prettyDateFormat } from "../../utils";
+import { getTodaysDate, prettyDateFormat } from "@utils/utils";
 import RateImageComponent from "./RateImageComponent";
 import ImageRatingsCollapsible from "./ImageRatingsCollapsible";
 import FavoriteImageComponent from "./FavoriteImageComponent";
@@ -8,6 +8,37 @@ import FavoriteImageComponent from "./FavoriteImageComponent";
 const ImageCard = ({ image }) => {
   const formattedDate = prettyDateFormat(image.date);
   var ratio = 1;
+  const readOnly = image.date != getTodaysDate();
+
+  const getImageFile = async () => {
+    const blog = await (await fetch(image.url)).blob();
+    return await new File([blob], `${image.date}.jpg`, { type: blob.type });
+  };
+
+  const handleSharing = async () => {
+    const image = getImageFile();
+    const shareDetails = {
+      files: [image],
+      url: "https://thedailygerth.web.app",
+      title: formattedDate,
+      text: formattedDate,
+    };
+
+    try {
+      if (navigator.canShare(shareDetails)) {
+        await navigator
+          .share(shareDetails)
+          .then(() =>
+            console.log("Hooray! Your content was shared to tha world")
+          );
+      } else {
+        throw new Error("Can't Share data");
+      }
+    } catch (error) {
+      console.log(error);
+      alert("This Browser does not support sharing. Please try Safari browser");
+    }
+  };
 
   return (
     <div className="card p-2">
@@ -26,15 +57,15 @@ const ImageCard = ({ image }) => {
       />
       <div className="card-actions flow-root mt-1 mb-0">
         <div className="flex float-left">
-          <RateImageComponent image={image} />
-          <ChatCircle
+          <RateImageComponent image={image} readOnly={readOnly} />
+          {/* <ChatCircle
             onClick={() => console.log("Pressed comment button!")}
             className="m-2 text-neutral"
             weight="regular"
             size={32}
-          />
+          /> */}
           <PaperPlaneTilt
-            onClick={() => console.log("Pressed share button!")}
+            onClick={() => handleSharing()}
             className="m-2 text-neutral"
             weight="regular"
             size={32}

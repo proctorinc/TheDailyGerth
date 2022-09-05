@@ -1,4 +1,4 @@
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "@hooks/useAuth";
 import Link from "next/link";
 
 const Header = () => {
@@ -35,7 +35,7 @@ const Header = () => {
                 </li>
                 <li>
                   <Link href="/favorites">
-                    <a onClick={() => clearError()}>Favorites</a>
+                    <a onClick={() => clearError()}>favorites</a>
                   </Link>
                 </li>
               </>
@@ -69,7 +69,7 @@ const Header = () => {
 
               <li>
                 <Link href="/favorites">
-                  <a onClick={() => clearError()}>Favorites</a>
+                  <a onClick={() => clearError()}>favorites</a>
                 </Link>
               </li>
             </>

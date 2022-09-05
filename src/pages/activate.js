@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Header from "../components/Header";
-import { useAuth } from "../hooks/useAuth";
-import ErrorAlert from "../components/ErrorAlert";
 import Link from "next/link";
+import Header from "@components/ui/Header";
+import { useAuth } from "@hooks/useAuth";
+import ErrorAlert from "@components/ui/ErrorAlert";
 
 const ActivateAccount = () => {
   const [email, setEmail] = useState("");

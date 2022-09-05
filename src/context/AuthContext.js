@@ -4,8 +4,9 @@ import {
   sendPasswordResetEmail,
   signOut,
   onAuthStateChanged,
+  updateProfile,
 } from "firebase/auth";
-import { auth } from "../../firebase/firebaseConfig";
+import { auth } from "@firebase/firebaseConfig";
 
 const AuthContext = createContext();
 
@@ -51,16 +52,24 @@ export const AuthProvider = ({ children }) => {
 
   const handleLogin = (email, password) => {
     if (email && password) {
-      signInWithEmailAndPassword(auth, email, password).catch((err) => {
-        if (err.code === "auth/invalid-email") {
-          setError("Enter a valid email address");
-        } else {
-          setError("Invalid email or password");
-        }
-      });
+      signInWithEmailAndPassword(auth, email, password)
+        .then((user) => {
+          console.log("USERNAME: " + user.displayName);
+          if (!user.displayName) {
+            setDisplayName(user);
+          }
+        })
+        .catch((err) => {
+          if (err.code === "auth/invalid-email") {
+            setError("Enter a valid email address");
+          } else {
+            setError("Invalid email or password");
+          }
+        });
     } else {
       setError("Enter email and password");
     }
+    // If user's displayName is null, then update the user with what is in firestore
   };
 
   const sendActivationEmail = (email) => {
@@ -122,6 +131,19 @@ export const AuthProvider = ({ children }) => {
   //       setError("Enter email, password, and confirm password");
   //     }
   //   };
+
+  const fetchUsername = () => {
+    return "MattyP";
+  };
+
+  const setDisplayName = (user) => {
+    const username = fetchUsername();
+    updateProfile(user, {
+      displayName: username,
+    }).catch((error) => {
+      console.log("Error updating display name: " + error.message);
+    });
+  };
 
   const deleteAccount = () => {
     // Delete from Auth

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { fetchLiveRatingsSnapshot } from "../api/firestore";
+import { fetchRatingsSnapshot } from "@api/firestore";
 
 const useRatingsSnapshot = ({ imageData }) => {
   const [ratings, setRatings] = useState([]);
   const [ratingsLoading, setRatingsLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = fetchLiveRatingsSnapshot(imageData, setRatings);
+    const unsubscribe = fetchRatingsSnapshot(imageData, setRatings);
     setRatingsLoading(false);
 
     return () => unsubscribe();

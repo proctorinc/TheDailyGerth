@@ -1,25 +1,22 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import {
   fetchImageCount,
   fetchTodaysImage,
   fetchImagesAfter,
-} from "../api/firestore";
-import { getTodaysDate } from "../utils";
-import InfiniteScroll from "react-infinite-scroll-component";
-import useScrollSnap from "react-use-scroll-snap";
-import AuthRoute from "../components/flow/AuthRoute";
-import CheckLoading from "../components/flow/CheckLoading";
-import Header from "../components/ui/Header";
-import Spinner from "../components/ui/Spinner";
-import ImageCard from "../components/image/ImageCard";
-import CountdownTimer from "../components/home/CountdownTimer";
+} from "@api/firestore";
+import { getTodaysDate } from "@utils/utils";
+import AuthRoute from "@components/flow/AuthRoute";
+import CheckLoading from "@components/flow/CheckLoading";
+import Header from "@components/ui/Header";
+import Spinner from "@components/ui/Spinner";
+import ImageCard from "@components/image/ImageCard";
+import CountdownTimer from "@components/home/CountdownTimer";
 
 export default function Home() {
   const [images, setImages] = useState([]);
   const [numberOfImages, setNumberOfImages] = useState(1);
   const [loading, setLoading] = useState(true);
-  // const scrollRef = useRef();
-  // useScrollSnap({ ref: scrollRef, duration: 100, delay: 50 });
 
   const getNumberOfImages = async () => {
     const count = await fetchImageCount();
@@ -66,8 +63,7 @@ export default function Home() {
       <CheckLoading isLoading={loading} renderOnLoading={<Spinner size="lg" />}>
         <CountdownTimer />
         <InfiniteScroll
-          className="pb-48 flex-grow h-screen"
-          // ref={scrollRef}
+          className="pb-40"
           dataLength={images.length}
           next={getNextImages}
           hasMore={images.length < numberOfImages}

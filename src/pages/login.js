@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import Header from "../components/Header";
-import { useAuth } from "../hooks/useAuth";
+import Header from "@components/ui/Header";
+import { useAuth } from "@hooks/useAuth";
 import Router from "next/router";
-import ErrorAlert from "../components/ErrorAlert";
+import ErrorAlert from "@components/ui/ErrorAlert";
 import Link from "next/link";
 
 const Login = () => {
