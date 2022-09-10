@@ -31,7 +31,11 @@ const Login = () => {
                 value={email}
                 type="text"
                 placeholder="email"
-                className="input input-bordered"
+                className={
+                  error
+                    ? "input input-bordered placeholder-error text-error input-error rounded-lg"
+                    : "input input-bordered rounded-lg"
+                }
                 onChange={(event) => setEmail(event.target.value)}
               />
             </div>
@@ -43,7 +47,11 @@ const Login = () => {
                 value={password}
                 type="password"
                 placeholder="password"
-                className="input input-bordered"
+                className={
+                  error
+                    ? "input input-bordered placeholder-error text-error input-error rounded-lg"
+                    : "input input-bordered rounded-lg"
+                }
                 onChange={(event) => setPassword(event.target.value)}
               />
               <label className="label">
@@ -57,7 +65,7 @@ const Login = () => {
             </div>
             <div className="form-control mt-6">
               <button
-                className="btn btn-primary"
+                className="btn btn-primary rounded-lg"
                 onClick={() => {
                   clearError();
                   handleLogin(email, password);

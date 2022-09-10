@@ -6,7 +6,8 @@ import {
   onAuthStateChanged,
   updateProfile,
 } from "firebase/auth";
-import { auth } from "@firebase/firebaseConfig";
+import { fetchUserDisplayNameFromFirestore } from "@api/firestore";
+import { auth } from "@firebase/config";
 
 const AuthContext = createContext();
 
@@ -53,10 +54,9 @@ export const AuthProvider = ({ children }) => {
   const handleLogin = (email, password) => {
     if (email && password) {
       signInWithEmailAndPassword(auth, email, password)
-        .then((user) => {
-          console.log("USERNAME: " + user.displayName);
+        .then(({ user }) => {
           if (!user.displayName) {
-            setDisplayName(user);
+            updateDisplayName(user);
           }
         })
         .catch((err) => {
@@ -69,7 +69,6 @@ export const AuthProvider = ({ children }) => {
     } else {
       setError("Enter email and password");
     }
-    // If user's displayName is null, then update the user with what is in firestore
   };
 
   const sendActivationEmail = (email) => {
@@ -132,12 +131,8 @@ export const AuthProvider = ({ children }) => {
   //     }
   //   };
 
-  const fetchUsername = () => {
-    return "MattyP";
-  };
-
-  const setDisplayName = (user) => {
-    const username = fetchUsername();
+  const updateDisplayName = async (user) => {
+    const username = await fetchUserDisplayNameFromFirestore();
     updateProfile(user, {
       displayName: username,
     }).catch((error) => {

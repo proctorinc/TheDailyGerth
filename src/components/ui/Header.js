@@ -1,97 +1,109 @@
-import { useAuth } from "@hooks/useAuth";
+import { useState } from "react";
 import Link from "next/link";
+import { useTheme } from "next-themes";
+import { useAuth } from "@hooks/useAuth";
 
 const Header = () => {
   const { handleLogout, currentUser, clearError } = useAuth();
+  const [checked, setChecked] = useState(false);
+  const { theme, setTheme } = useTheme();
+
+  const handleToggleTheme = () => {
+    setChecked(!checked);
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
 
   return (
-    <div className="navbar sticky top-0 z-50 bg-base-100">
-      <div className="navbar-start">
-        <div className="dropdown">
-          <label tabIndex="0" className="btn btn-ghost lg:hidden">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+    <div className="navbar sticky top-0 z-50 bg-base-100 bg-opacity-80 backdrop-blur-sm">
+      {currentUser && (
+        <div className="navbar-start">
+          <div className="dropdown">
+            <label tabIndex="0" className="btn btn-ghost btn-circle">
+              <div className="indicator">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                  />
+                </svg>
+                <span className="badge badge-xs badge-primary indicator-item"></span>
+              </div>
+            </label>
+            <ul
+              tabIndex="0"
+              className="menu menu-compact rounded-lg dropdown-content mt-3 mx-1 shadow bg-base-100 rounded-box w-64 bg-opacity-80 backdrop-blur-sm"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h8m-8 6h16"
-              />
-            </svg>
-          </label>
-          <ul
-            tabIndex="0"
-            className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 shadow-xl rounded-box w-52"
-          >
-            {currentUser ? (
-              <>
-                <li>
-                  <a onClick={() => handleLogout()}>logout</a>
-                </li>
-                <li>
-                  <Link href="/favorites">
-                    <a onClick={() => clearError()}>favorites</a>
-                  </Link>
-                </li>
-              </>
-            ) : (
-              <>
-                <li>
-                  <Link href="/login">
-                    <a onClick={() => clearError()}>login</a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/activate">
-                    <a onClick={() => clearError()}>activate</a>
-                  </Link>
-                </li>
-              </>
-            )}
-          </ul>
+              <li>
+                <a className="justify-between">
+                  New Daily Gerth!
+                  <span className="badge">9/10/22</span>
+                </a>
+              </li>
+              <li>
+                <a>MattyP rated 5 hearts</a>
+              </li>
+              <li>
+                <a>WifeyP rated 3 hearts</a>
+              </li>
+            </ul>
+          </div>
         </div>
+      )}
+      <div className="navbar-center">
         <Link href="/">
-          <a className="btn btn-ghost normal-case text-xl">The Daily Gerth</a>
+          <a className="btn btn-ghost normal-case text-xl rounded-lg">
+            The Daily Gerth
+          </a>
         </Link>
       </div>
-      <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal p-0">
-          {currentUser ? (
-            <>
+      {currentUser && (
+        <div className="navbar-end">
+          <div className="dropdown dropdown-end">
+            <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+              <div className="w-10 rounded-full">
+                <img src="https://placeimg.com/80/80/people" />
+              </div>
+            </label>
+            <ul
+              tabIndex={0}
+              className="menu menu-compact rounded-lg dropdown-content mt-3 mx-1 shadow bg-base-100 rounded-box w-40 bg-opacity-80 backdrop-blur-sm"
+            >
               <li>
-                <a onClick={() => handleLogout()}>logout</a>
-              </li>
-
-              <li>
-                <Link href="/favorites">
-                  <a onClick={() => clearError()}>favorites</a>
+                <Link href="/profile">
+                  <a className="justify-between">
+                    Profile
+                    {/* <span className="badge">New Favorites!</span> */}
+                  </a>
                 </Link>
               </li>
-            </>
-          ) : (
-            <>
               <li>
-                <Link href="/login">
-                  <a onClick={() => clearError()}>login</a>
-                </Link>
+                <a onClick={() => handleLogout()}>Logout</a>
               </li>
               <li>
-                <Link href="/activate">
-                  <a onClick={() => clearError()}>activate</a>
-                </Link>
+                <a className="justify-between">
+                  Theme
+                  <div className="form-control m-0 p-0">
+                    <input
+                      type="checkbox"
+                      className="toggle toggle-primary rounded-full"
+                      checked={theme === "light"}
+                      onChange={handleToggleTheme}
+                    />
+                  </div>
+                </a>
               </li>
-            </>
-          )}
-        </ul>
-      </div>
-      {/* <div className="navbar-end">
-        <a className="btn">Get started</a>
-      </div> */}
+            </ul>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

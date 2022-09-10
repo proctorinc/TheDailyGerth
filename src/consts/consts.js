@@ -1,4 +1,4 @@
-export const IMAGES_PER_PAGE = 2;
+export const IMAGES_PER_PAGE = 5;
 export const LIMIT_ONE = 1;
 
 export const IMAGES_COLLECTION = "images";
@@ -11,4 +11,4 @@ export const VALUE_FIELD = "value";
 
 export const DESC = "desc";
 
-export const COLOR_PINK = "#FD8D8D";
+export const ICON_SIZE = 26;

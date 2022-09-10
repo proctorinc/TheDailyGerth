@@ -1,85 +1,64 @@
 import Image from "next/image";
-import { ChatCircle, PaperPlaneTilt } from "phosphor-react";
+import { PaperPlaneTilt } from "phosphor-react";
 import { getTodaysDate, prettyDateFormat } from "@utils/utils";
-import RateImageComponent from "./RateImageComponent";
-import ImageRatingsCollapsible from "./ImageRatingsCollapsible";
-import FavoriteImageComponent from "./FavoriteImageComponent";
+import SetRatingIcon from "./SetRatingIcon";
+import RatingViewCollapsible from "./RatingViewCollapsible";
+import ToggleFavoritedIcon from "./ToggleFavoritedIcon";
+import { ICON_SIZE } from "@consts/consts";
 
 const ImageCard = ({ image }) => {
   const formattedDate = prettyDateFormat(image.date);
   var ratio = 1;
   const readOnly = image.date != getTodaysDate();
 
-  const getImageFile = async () => {
-    const blog = await (await fetch(image.url)).blob();
-    return await new File([blob], `${image.date}.jpg`, { type: blob.type });
-  };
-
   const handleSharing = async () => {
-    const image = getImageFile();
-    const shareDetails = {
-      files: [image],
-      url: "https://thedailygerth.web.app",
-      title: formattedDate,
-      text: formattedDate,
+    const data = {
+      url: `thedailygerth.web.app/daily?${image.date}/#${image.date}`,
+      title: `The Daily Gerth: ${formattedDate}`,
     };
-
+    if (navigator.share === undefined) {
+      alert("This Browser does not support sharing. Please try Safari browser");
+    }
     try {
-      if (navigator.canShare(shareDetails)) {
-        await navigator
-          .share(shareDetails)
-          .then(() =>
-            console.log("Hooray! Your content was shared to tha world")
-          );
+      if (navigator.canShare(data)) {
+        await navigator.share(data);
       } else {
         throw new Error("Can't Share data");
       }
-    } catch (error) {
-      console.log(error);
-      alert("This Browser does not support sharing. Please try Safari browser");
-    }
+    } catch (err) {}
   };
 
   return (
-    <div className="card p-2">
-      <Image
-        alt={image.url}
-        src={image.url}
-        // layout={"fill"}
-        // objectFit={"contain"}
-        width={200}
-        height={200 / ratio}
-        layout="responsive"
-        className="relative rounded-xl"
-        onLoadingComplete={({ naturalWidth, naturalHeight }) =>
-          (ratio = naturalWidth / naturalHeight)
-        }
-      />
+    <div id={image.date} className="card p-2">
+      <div className="w-full">
+        <Image
+          id={image.url}
+          alt={image.url}
+          src={image.url}
+          width={window.innerWidth}
+          height={window.innerWidth}
+          layout="responsive"
+          className="relative rounded-lg"
+          // onLoadingComplete={({ naturalWidth, naturalHeight }) =>
+          //   (ratio = naturalWidth / naturalHeight)
+          // }
+        />
+      </div>
       <div className="card-actions flow-root mt-1 mb-0">
         <div className="flex float-left">
-          <RateImageComponent image={image} readOnly={readOnly} />
-          {/* <ChatCircle
-            onClick={() => console.log("Pressed comment button!")}
-            className="m-2 text-neutral"
-            weight="regular"
-            size={32}
-          /> */}
+          <SetRatingIcon image={image} readOnly={readOnly} />
           <PaperPlaneTilt
             onClick={() => handleSharing()}
-            className="m-2 text-neutral"
+            className="m-1 text-neutral"
             weight="regular"
-            size={32}
+            size={ICON_SIZE}
           />
         </div>
-        <FavoriteImageComponent image={image} />
+        <ToggleFavoritedIcon image={image} />
       </div>
-      <h2 className="card-title px-2">{formattedDate}</h2>
-      <div className="card-content px-2">
-        <p>Look at this cat. Can you believe how chunky it is?</p>
-        {/* <div className="badge badge-outline float-right text-gray-500">
-            picture taken: {image.date}
-          </div> */}
-        <ImageRatingsCollapsible image={image} />
+      <div className="card-content px-2 text-sm">
+        <h2 className="card-title text-md">{formattedDate}</h2>
+        <RatingViewCollapsible image={image} />
       </div>
     </div>
   );

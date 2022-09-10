@@ -1,12 +1,10 @@
 import { useState } from "react";
 
-const CountdownTimer = ({ isScreenLoading }) => {
+const CountdownTimer = () => {
   const [countdown, setCountdown] = useState();
 
   // Set the date we're counting down to
   var countDownDate = new Date(Date.now()).setHours(24, 0, 0, 0);
-
-  //   .getTime();
 
   // Update the count down every 1 second
   var x = setInterval(function () {
@@ -35,8 +33,8 @@ const CountdownTimer = ({ isScreenLoading }) => {
 
   return (
     <div className="w-full text-center pb-3">
-      <h1 className="text-lg">Time until the next Gerth pic</h1>
-      <h1 className="text-4xl">{countdown}</h1>
+      <h1 className="text-sm">Time until the next Daily Gerth</h1>
+      <h1 className="text-3xl">{countdown}</h1>
     </div>
   );
 };

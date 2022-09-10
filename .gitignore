@@ -36,11 +36,14 @@ yarn-error.log*
 next-env.d.ts
 
 # firebase
-firebaseConfig.js
+firebase.js
+
+config.js
 
 .firebase/*
 .github/*
 .firebaserc
 
-server.js
-cert/*
+server/cert/*
+
+.env.local

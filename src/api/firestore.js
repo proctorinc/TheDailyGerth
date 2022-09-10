@@ -1,4 +1,4 @@
-import { db } from "@firebase/firebaseConfig";
+import { db } from "@firebase/config";
 import {
   collection,
   getDocs,
@@ -25,9 +25,9 @@ import {
   DESC,
 } from "@consts/consts";
 import { getTodaysDate, getUserDocumentIdForImage } from "@utils/utils";
+import { auth } from "@firebase/config";
 
 const checkIfUserDocumentExists = async (collection, imageData) => {
-  const date = imageData.date;
   const docRef = doc(db, collection, getUserDocumentIdForImage(imageData));
   const querySnapshot = await getDoc(docRef);
 
@@ -88,7 +88,7 @@ export const fetchImagesAfter = async (imageData) => {
 };
 
 export const setImageAsFavorite = (imageData) => {
-  const username = "MattyP"; //auth.currentUser.username;
+  const username = auth.currentUser.displayName;
   const docRef = doc(
     db,
     FAVORITES_COLLECTION,
@@ -97,12 +97,13 @@ export const setImageAsFavorite = (imageData) => {
   setDoc(docRef, {
     username: username,
     image_date: imageData.date,
+    image_url: imageData.url,
   });
 };
 
 export const setImageRating = (imageData, rating) => {
   const date = imageData.date;
-  const username = "MattyP"; //auth.currentUser.username;
+  const username = auth.currentUser.displayName;
   const docRef = doc(
     db,
     RATINGS_COLLECTION,
@@ -170,4 +171,55 @@ export const fetchUserRatingSnapshot = (imageData, handleResult) => {
   );
 
   return subscription;
+};
+
+export const fetchUserDisplayNameFromFirestore = async () => {
+  const userEmail = auth.currentUser.email;
+  const imagesRef = collection(db, "users");
+  const q = query(imagesRef, where("email", "==", userEmail));
+  const querySnapshot = await getDocs(q);
+
+  var username = null;
+  querySnapshot.forEach((doc) => {
+    username = doc.data().username;
+  });
+
+  return username;
+};
+
+export const fetchFavoritedImageCount = async () => {
+  const imagesRef = collection(db, FAVORITES_COLLECTION);
+  const querySnapshot = await getDocs(imagesRef);
+
+  return querySnapshot.size;
+};
+
+// TODO: make it so favorited doc contains the url of the image
+export const fetchFavoritedImagesAfter = async (lastDate) => {
+  const imagesRef = collection(db, FAVORITES_COLLECTION);
+  let q;
+
+  if (lastDate) {
+    q = query(
+      imagesRef,
+      orderBy(IMAGE_DATE_FIELD, DESC),
+      startAfter(lastDate),
+      limit(IMAGES_PER_PAGE)
+    );
+  } else {
+    q = query(
+      imagesRef,
+      orderBy(IMAGE_DATE_FIELD, DESC),
+      limit(IMAGES_PER_PAGE)
+    );
+  }
+
+  const querySnapshot = await getDocs(q);
+
+  const images = [];
+  querySnapshot.forEach((doc) => {
+    images.push(doc.data());
+  });
+
+  return images;
 };

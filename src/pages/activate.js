@@ -23,7 +23,11 @@ const ActivateAccount = () => {
                 value={email}
                 type="text"
                 placeholder="email"
-                className="input input-bordered"
+                className={
+                  error
+                    ? "input input-bordered placeholder-error text-error input-error rounded-lg"
+                    : "input input-bordered rounded-lg"
+                }
                 onChange={(event) => setEmail(event.target.value)}
               />
               <label className="label">
@@ -33,15 +37,9 @@ const ActivateAccount = () => {
               </label>
             </div>
             <div htmlFor="my-modal" className="form-control mt-6">
-              {/* <button
-              className="btn btn-primary modal-button"
-              onClick={() => sendActivationEmail(email)}
-            >
-              Activate
-            </button> */}
               <label
                 htmlFor="my-modal"
-                className="btn btn-primary modal-button"
+                className="btn btn-primary modal-button rounded-lg"
                 onClick={() => sendActivationEmail(email)}
               >
                 Activate
