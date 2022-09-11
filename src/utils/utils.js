@@ -21,6 +21,16 @@ export const getTodaysDate = () => {
     .replace(/\//g, "-");
 };
 
+export const getTodaysDateSimple = () => {
+  var timezoneOffset =
+    new Date(Date.now() - timezoneOffset).getTimezoneOffset() * 60000;
+  return new Date().toLocaleString("en-US", {
+    month: "numeric",
+    day: "numeric",
+    year: "2-digit",
+  });
+};
+
 export const getUserDocumentIdForImage = (imageData) => {
   const date = imageData.date;
   const userId = auth.currentUser.uid;

@@ -33,7 +33,7 @@ const CountdownTimer = () => {
 
   return (
     <div className="w-full text-center pb-3">
-      <h1 className="text-sm">Time until the next Daily Gerth</h1>
+      <h1 className="text-sm text-base-300">Time until the next Daily Gerth</h1>
       <h1 className="text-3xl">{countdown}</h1>
     </div>
   );

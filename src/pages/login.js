@@ -4,6 +4,8 @@ import { useAuth } from "@hooks/useAuth";
 import Router from "next/router";
 import ErrorAlert from "@components/ui/ErrorAlert";
 import Link from "next/link";
+import { ArrowCircleRight, ArrowRight, CaretCircleRight } from "phosphor-react";
+import { ICON_SIZE } from "../consts/consts";
 
 const Login = () => {
   const { currentUser, handleLogin, error, clearError, loading } = useAuth();
@@ -18,15 +20,15 @@ const Login = () => {
 
   return (
     <div className="flex flex-col h-screen">
-      <Header />
       <div className="flex flex-col items-center justify-center flex-grow">
         <ErrorAlert value={error} />
-        <div className="card flex-shrink-0 w-full max-w-sm bg-base-100 sm:h-fit h-3/4">
+        <div className="card flex-shrink-0 w-full max-w-sm bg-base-100 sm:h-fit h-1/2">
+          <h1 className="text-3xl text-center pb-10">The Daily Gerth</h1>
           <div className="card-body">
             <div className="form-control">
-              <label className="label">
+              {/* <label className="label">
                 <span className="label-text">Email</span>
-              </label>
+              </label> */}
               <input
                 value={email}
                 type="text"
@@ -40,9 +42,9 @@ const Login = () => {
               />
             </div>
             <div className="form-control">
-              <label className="label">
+              {/* <label className="label">
                 <span className="label-text">Password</span>
-              </label>
+              </label> */}
               <input
                 value={password}
                 type="password"
@@ -71,7 +73,12 @@ const Login = () => {
                   handleLogin(email, password);
                 }}
               >
-                Login
+                <div className="flex items-center gap-1 text-lg">
+                  Sign In
+                  <span>
+                    <CaretCircleRight size={ICON_SIZE} />
+                  </span>
+                </div>
               </button>
             </div>
           </div>

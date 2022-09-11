@@ -15,7 +15,7 @@ const RatingViewCollapsible = ({ image }) => {
 
   if (!ratings.length) {
     return (
-      <fieldset className="border-t border-light text-medium mt-4 pb-5">
+      <fieldset className="border-t border-neutral text-base-200 mt-4 pb-5">
         <legend className="mx-auto px-4 text-xs">no ratings</legend>
       </fieldset>
     );
@@ -23,13 +23,13 @@ const RatingViewCollapsible = ({ image }) => {
 
   return (
     <div className="pt-4 pb-6">
-      <fieldset className="border-t border-light text-medium pb-5">
+      <fieldset className="border-t border-neutral font-bold text-base-200 pb-5">
         <legend className="mx-auto px-4 text-xs">
           ratings
           {/* <div className="flex justify-between">
             ratings
             <CaretUp
-              className="text-medium mx-1"
+              className="text-base-200 mx-1"
               weight="regular"
               size={ICON_SIZE}
             />
@@ -45,7 +45,7 @@ const RatingViewCollapsible = ({ image }) => {
             >
               <div className="flex justify-center align-center pb-1">
                 <UserCircle
-                  className="text-neutral mx-1"
+                  className="text-base-300 mx-1"
                   weight="regular"
                   size={ICON_SIZE}
                 />
@@ -56,7 +56,7 @@ const RatingViewCollapsible = ({ image }) => {
                     readonly
                     emptySymbol={
                       <Heart
-                        className="text-neutral"
+                        className="text-base-300"
                         weight="regular"
                         size={ICON_SIZE}
                       />

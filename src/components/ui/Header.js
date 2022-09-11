@@ -2,11 +2,15 @@ import { useState } from "react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { useAuth } from "@hooks/useAuth";
+import { Bell, UserCircle } from "phosphor-react";
+import { ICON_SIZE } from "@consts/consts";
+import { getTodaysDateSimple } from "@utils/utils";
 
 const Header = () => {
   const { handleLogout, currentUser, clearError } = useAuth();
   const [checked, setChecked] = useState(false);
   const { theme, setTheme } = useTheme();
+  const today = getTodaysDateSimple();
 
   const handleToggleTheme = () => {
     setChecked(!checked);
@@ -14,49 +18,34 @@ const Header = () => {
   };
 
   return (
-    <div className="navbar sticky top-0 z-50 bg-base-100 bg-opacity-80 backdrop-blur-sm">
-      {currentUser && (
-        <div className="navbar-start">
-          <div className="dropdown">
-            <label tabIndex="0" className="btn btn-ghost btn-circle">
-              <div className="indicator">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                  />
-                </svg>
-                <span className="badge badge-xs badge-primary indicator-item"></span>
-              </div>
-            </label>
-            <ul
-              tabIndex="0"
-              className="menu menu-compact rounded-lg dropdown-content mt-3 mx-1 shadow bg-base-100 rounded-box w-64 bg-opacity-80 backdrop-blur-sm"
-            >
-              <li>
-                <a className="justify-between">
-                  New Daily Gerth!
-                  <span className="badge">9/10/22</span>
-                </a>
-              </li>
-              <li>
-                <a>MattyP rated 5 hearts</a>
-              </li>
-              <li>
-                <a>WifeyP rated 3 hearts</a>
-              </li>
-            </ul>
-          </div>
+    <div className="navbar sticky top-0 z-50 bg-base-100 bg-opacity-75 backdrop-blur-sm mb-5">
+      <div className="navbar-start">
+        <div className="dropdown">
+          <label tabIndex="0" className="btn btn-ghost btn-circle">
+            <div className="indicator">
+              <Bell size={ICON_SIZE} />
+              <span className="badge badge-xs badge-primary indicator-item rounded-full"></span>
+            </div>
+          </label>
+          <ul
+            tabIndex="0"
+            className="menu rounded-lg dropdown-content mt-3 mx-1 shadow bg-base-100 rounded-box w-64 bg-opacity-75 backdrop-blur-sm"
+          >
+            <li>
+              <a className="justify-between">
+                New Daily Gerth!
+                <span className="badge bg-primary rounded-lg">{today}</span>
+              </a>
+            </li>
+            <li>
+              <a>MattyP rated today</a>
+            </li>
+            <li>
+              <a>WifeyP rated today</a>
+            </li>
+          </ul>
         </div>
-      )}
+      </div>
       <div className="navbar-center">
         <Link href="/">
           <a className="btn btn-ghost normal-case text-xl rounded-lg">
@@ -69,12 +58,12 @@ const Header = () => {
           <div className="dropdown dropdown-end">
             <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
               <div className="w-10 rounded-full">
-                <img src="https://placeimg.com/80/80/people" />
+                <UserCircle size={40} />
               </div>
             </label>
             <ul
               tabIndex={0}
-              className="menu menu-compact rounded-lg dropdown-content mt-3 mx-1 shadow bg-base-100 rounded-box w-40 bg-opacity-80 backdrop-blur-sm"
+              className="menu rounded-lg dropdown-content mt-3 mx-1 shadow bg-base-100 rounded-box w-40 bg-opacity-75 backdrop-blur-sm"
             >
               <li>
                 <Link href="/profile">

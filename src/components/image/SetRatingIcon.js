@@ -25,6 +25,8 @@ const SetRatingIcon = ({ image, readOnly }) => {
 
   useEffect(() => {
     getHasRated();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -42,13 +44,21 @@ const SetRatingIcon = ({ image, readOnly }) => {
             setOpenRatings(false);
           }}
           emptySymbol={
-            <Heart className="text-neutral" weight="regular" size={ICON_SIZE} />
+            <Heart
+              className="text-base-300"
+              weight="regular"
+              size={ICON_SIZE}
+            />
           }
           fullSymbol={
             <Heart className="text-secondary" weight="fill" size={ICON_SIZE} />
           }
           placeholderSymbol={
-            <Heart className="text-neutral" weight="duotone" size={ICON_SIZE} />
+            <Heart
+              className="text-base-300"
+              weight="duotone"
+              size={ICON_SIZE}
+            />
           }
         />
       )}
@@ -60,7 +70,7 @@ const SetRatingIcon = ({ image, readOnly }) => {
               data-tip="You can only rate today's image"
             >
               <Heart
-                className="text-neutral"
+                className="text-base-300"
                 weight="duotone"
                 size={ICON_SIZE}
               />
@@ -97,7 +107,7 @@ const SetRatingIcon = ({ image, readOnly }) => {
               onClick={() => {
                 toggleOpenRatings();
               }}
-              className="text-neutral"
+              className="text-base-300"
               weight="regular"
               size={ICON_SIZE}
             />

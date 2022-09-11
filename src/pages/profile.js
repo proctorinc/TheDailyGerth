@@ -12,7 +12,7 @@ import CheckLoading from "@components/flow/CheckLoading";
 import Image from "next/image";
 import Container from "@components/ui/Container";
 
-const profile = () => {
+const Profile = () => {
   const { currentUser } = useAuth();
   const [images, setImages] = useState([]);
   const [numberOfImages, setNumberOfImages] = useState();
@@ -53,7 +53,7 @@ const profile = () => {
           renderOnLoading={<Spinner size="lg" />}
         >
           <div className="text-center text-xl">
-            {currentUser.displayName}'s Favorites
+            {currentUser.displayName}&apos;s Favorites
           </div>
           <InfiniteScroll
             className="pb-96 pt-10"
@@ -74,6 +74,7 @@ const profile = () => {
                     <Image
                       key={i}
                       src={image.url}
+                      alt={image.url}
                       height={100}
                       width={100}
                       layout="responsive"
@@ -89,4 +90,4 @@ const profile = () => {
   );
 };
 
-export default profile;
+export default Profile;

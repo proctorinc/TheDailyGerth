@@ -10,6 +10,8 @@ const useRatingsSnapshot = ({ imageData }) => {
     setRatingsLoading(false);
 
     return () => unsubscribe();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {

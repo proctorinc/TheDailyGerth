@@ -49,7 +49,7 @@ export default function Home() {
   };
 
   const renderEndMessage = (
-    <div className="w-full text-center pt-10 text-sm text-medium">
+    <div className="w-full text-center pt-10 text-sm text-base-200">
       <div className="badge badge-outline">No more cats to see :(</div>
     </div>
   );

@@ -18,6 +18,8 @@ const ToggleFavoritedIcon = ({ image }) => {
 
   useEffect(() => {
     getHasFavorited();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -43,7 +45,7 @@ const ToggleFavoritedIcon = ({ image }) => {
             setHasFavorited(true);
           }}
           onAnimationEnd={() => setEffect(false)}
-          className={`${effect && "animate-wiggle"} text-neutral`}
+          className={`${effect && "animate-wiggle"} text-base-300`}
           weight="regular"
           size={ICON_SIZE}
         />

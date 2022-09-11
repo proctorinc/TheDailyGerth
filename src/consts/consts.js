@@ -11,4 +11,4 @@ export const VALUE_FIELD = "value";
 
 export const DESC = "desc";
 
-export const ICON_SIZE = 26;
+export const ICON_SIZE = 32;

@@ -14,7 +14,7 @@ const ImageCard = ({ image }) => {
   const handleSharing = async () => {
     const data = {
       url: `thedailygerth.web.app/daily?${image.date}/#${image.date}`,
-      title: `The Daily Gerth: ${formattedDate}`,
+      text: `The Daily Gerth: ${formattedDate}`,
     };
     if (navigator.share === undefined) {
       alert("This Browser does not support sharing. Please try Safari browser");
@@ -38,7 +38,7 @@ const ImageCard = ({ image }) => {
           width={window.innerWidth}
           height={window.innerWidth}
           layout="responsive"
-          className="relative rounded-lg"
+          className="relative rounded-lg bg-neutral"
           // onLoadingComplete={({ naturalWidth, naturalHeight }) =>
           //   (ratio = naturalWidth / naturalHeight)
           // }
@@ -49,7 +49,7 @@ const ImageCard = ({ image }) => {
           <SetRatingIcon image={image} readOnly={readOnly} />
           <PaperPlaneTilt
             onClick={() => handleSharing()}
-            className="m-1 text-neutral"
+            className="m-1 text-base-300"
             weight="regular"
             size={ICON_SIZE}
           />
