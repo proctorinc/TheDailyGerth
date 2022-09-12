@@ -8,6 +8,11 @@ import {
 } from "firebase/auth";
 import { fetchUserDisplayNameFromFirestore } from "@api/firestore";
 import { auth } from "@firebase/config";
+import {
+  INVALID_EMAIL_ERROR,
+  INVALID_EMAIL_OR_PASSWORD_ERROR,
+  NO_EMAIL_OR_PASSWORD_ERROR,
+} from "@consts/consts";
 
 const AuthContext = createContext();
 
@@ -61,25 +66,28 @@ export const AuthProvider = ({ children }) => {
         })
         .catch((err) => {
           if (err.code === "auth/invalid-email") {
-            setError("Enter a valid email address");
+            setError(INVALID_EMAIL_ERROR);
           } else {
-            setError("Invalid email or password");
+            setError(INVALID_EMAIL_OR_PASSWORD_ERROR);
           }
         });
     } else {
-      setError("Enter email and password");
+      setError(NO_EMAIL_OR_PASSWORD_ERROR);
     }
   };
 
-  const sendActivationEmail = (email) => {
-    sendPasswordResetEmail(auth, email).catch((err) => {
+  const sendActivationEmail = async (email) => {
+    const noError = true;
+    await sendPasswordResetEmail(auth, email).catch((err) => {
       if (
         err.code === "auth/invalid-email" ||
         err.code === "auth/missing-email"
       ) {
-        setError("Enter a valid email address");
+        noError = false;
+        setError(INVALID_EMAIL_ERROR);
       }
     });
+    return noError;
   };
 
   //   const handleSignup = async (username, email, password, confirmPassword) => {
@@ -148,6 +156,7 @@ export const AuthProvider = ({ children }) => {
   const contextData = {
     currentUser,
     loading,
+    setLoading,
     reload,
     handleLogin,
     handleLogout,

@@ -2,18 +2,22 @@ import { useState } from "react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { useAuth } from "@hooks/useAuth";
+import useRatingsSnapshot from "@hooks/useRatingsSnapshot";
 import { Bell, UserCircle } from "phosphor-react";
 import { ICON_SIZE } from "@consts/consts";
-import { getTodaysDateSimple } from "@utils/utils";
+import { getTodaysDateSimple, getTodaysDate } from "@utils/utils";
 
 const Header = () => {
   const { handleLogout, currentUser, clearError } = useAuth();
-  const [checked, setChecked] = useState(false);
   const { theme, setTheme } = useTheme();
+  const { ratings, ratingsLoading } = useRatingsSnapshot({
+    imageData: {
+      date: getTodaysDate(),
+    },
+  });
   const today = getTodaysDateSimple();
 
   const handleToggleTheme = () => {
-    setChecked(!checked);
     setTheme(theme === "dark" ? "light" : "dark");
   };
 
@@ -37,12 +41,16 @@ const Header = () => {
                 <span className="badge bg-primary rounded-lg">{today}</span>
               </a>
             </li>
-            <li>
-              <a>MattyP rated today</a>
-            </li>
-            <li>
-              <a>WifeyP rated today</a>
-            </li>
+            {ratings.map((userRating) => {
+              return (
+                <li key={userRating.username}>
+                  <a>
+                    {userRating.username} rated today
+                    {/* <span className="badge bg-neutral rounded-lg">{calculateTimeSince(userRating.timestamp)}</span> */}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
         </div>
       </div>
@@ -74,9 +82,6 @@ const Header = () => {
                 </Link>
               </li>
               <li>
-                <a onClick={() => handleLogout()}>Logout</a>
-              </li>
-              <li>
                 <a className="justify-between">
                   Theme
                   <div className="form-control m-0 p-0">
@@ -88,6 +93,9 @@ const Header = () => {
                     />
                   </div>
                 </a>
+              </li>
+              <li>
+                <a onClick={() => handleLogout()}>Logout</a>
               </li>
             </ul>
           </div>

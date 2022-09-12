@@ -33,7 +33,7 @@ const ImageCard = ({ image }) => {
       <div className="w-full">
         <Image
           id={image.url}
-          alt={image.url}
+          alt={"Image: " + image.date}
           src={image.url}
           width={window.innerWidth}
           height={window.innerWidth}

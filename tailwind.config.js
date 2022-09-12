@@ -9,6 +9,9 @@ module.exports = {
       sm: "500px",
     },
     extend: {
+      fontFamily: {
+        poppins: ["Poppins", "sans-serif"],
+      },
       keyframes: {
         wiggle: {
           "0%, 100%": { transform: "rotate(-12deg)" },
@@ -20,10 +23,16 @@ module.exports = {
             opacity: "0",
           },
         },
+        shimmer: {
+          "100%": {
+            transform: "translateY(100%)",
+          },
+        },
       },
       animation: {
         wiggle: "wiggle 200ms ease-in-out",
         flash: "flash 0.5s cubic-bezier(0, 0, 0.2, 1)",
+        shimmer: "shimmer 2s infinite",
       },
     },
     container: {

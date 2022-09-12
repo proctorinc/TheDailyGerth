@@ -1,11 +1,5 @@
 import CheckLoading from "@components/flow/CheckLoading";
-import {
-  ArrowCircleDown,
-  CaretDown,
-  CaretUp,
-  Heart,
-  UserCircle,
-} from "phosphor-react";
+import { Heart, UserCircle } from "phosphor-react";
 import Rating from "react-rating";
 import useRatingsSnapshot from "@hooks/useRatingsSnapshot";
 import { ICON_SIZE } from "@consts/consts";
@@ -24,17 +18,7 @@ const RatingViewCollapsible = ({ image }) => {
   return (
     <div className="pt-4 pb-6">
       <fieldset className="border-t border-neutral font-bold text-base-200 pb-5">
-        <legend className="mx-auto px-4 text-xs">
-          ratings
-          {/* <div className="flex justify-between">
-            ratings
-            <CaretUp
-              className="text-base-200 mx-1"
-              weight="regular"
-              size={ICON_SIZE}
-            />
-          </div> */}
-        </legend>
+        <legend className="mx-auto px-4 text-xs">ratings</legend>
       </fieldset>
       <CheckLoading isLoading={ratingsLoading}>
         {ratings.map((userRating) => {
@@ -43,6 +27,11 @@ const RatingViewCollapsible = ({ image }) => {
               key={userRating.username + userRating.value}
               className="flex justify-center"
             >
+              {/* For hiding ratings:
+                 opacity-10 blur-sm
+                 or
+                 make demo skeleton (blurred)
+              */}
               <div className="flex justify-center align-center pb-1">
                 <UserCircle
                   className="text-base-300 mx-1"

@@ -34,7 +34,9 @@ const Profile = () => {
 
   const renderEndMessage = (
     <div className="w-full text-center pt-10">
-      <div className="badge badge-outline">No more cats to see :(</div>
+      <div className="badge badge-outline rounded-lg">
+        No more cats to see :(
+      </div>
     </div>
   );
 
@@ -61,7 +63,6 @@ const Profile = () => {
             next={getNextImages}
             hasMore={images.length < numberOfImages}
             loader={<Spinner size={"lg"} />}
-            endMessage={renderEndMessage}
           >
             <div className="grid grid-cols-3 gap-1 pt-10">
               {images &&
@@ -74,7 +75,7 @@ const Profile = () => {
                     <Image
                       key={i}
                       src={image.url}
-                      alt={image.url}
+                      alt={"Image: " + image.date}
                       height={100}
                       width={100}
                       layout="responsive"

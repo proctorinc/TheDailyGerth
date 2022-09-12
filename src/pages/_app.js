@@ -8,7 +8,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <Component {...pageProps} />
+        <Component className="font-poppins" {...pageProps} />
       </AuthProvider>
     </ThemeProvider>
   );

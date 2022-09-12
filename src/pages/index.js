@@ -6,7 +6,6 @@ import {
   fetchTodaysImage,
   fetchImagesAfter,
 } from "@api/firestore";
-import { getTodaysDate } from "@utils/utils";
 import AuthRoute from "@components/flow/AuthRoute";
 import CheckLoading from "@components/flow/CheckLoading";
 import Header from "@components/ui/Header";
@@ -14,13 +13,14 @@ import Spinner from "@components/ui/Spinner";
 import ImageCard from "@components/image/ImageCard";
 import CountdownTimer from "@components/home/CountdownTimer";
 import Container from "@components/ui/Container";
+import ImageCardLoading from "@components/image/ImageCardLoading";
 
 export default function Home() {
+  const router = useRouter();
+  const { date } = router.query;
   const [images, setImages] = useState([]);
   const [numberOfImages, setNumberOfImages] = useState(1);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
-  const { date } = router.query;
 
   const getNumberOfImages = async () => {
     setNumberOfImages(await fetchImageCount());
@@ -39,18 +39,11 @@ export default function Home() {
     setImages((old) => [...old, ...newImages]);
   };
 
-  const onRefresh = () => {
-    if (!images.length || images[0].date != getTodaysDate()) {
-      setLoading(true);
-      getTodaysImage();
-      getNumberOfImages();
-      setLoading(false);
-    }
-  };
-
   const renderEndMessage = (
     <div className="w-full text-center pt-10 text-sm text-base-200">
-      <div className="badge badge-outline">No more cats to see :(</div>
+      <div className="badge badge-outline rounded-lg">
+        No more cats to see :(
+      </div>
     </div>
   );
 
@@ -64,10 +57,9 @@ export default function Home() {
     <AuthRoute>
       <Header />
       <Container>
-        {/* {date ? <h1>{date}</h1> : <></>} */}
         <CheckLoading
           isLoading={loading}
-          renderOnLoading={<Spinner size="lg" />}
+          renderOnLoading={<ImageCardLoading />} //<Spinner size="lg" />}
         >
           <CountdownTimer />
           <InfiniteScroll
@@ -75,13 +67,8 @@ export default function Home() {
             dataLength={images.length}
             next={getNextImages}
             hasMore={images.length < numberOfImages}
-            loader={<Spinner size={"lg"} />}
+            loader={<ImageCardLoading />}
             endMessage={renderEndMessage}
-            refreshFunction={onRefresh}
-            pullDownToRefresh
-            pullDownToRefreshThreshold={50}
-            pullDownToRefreshContent={images.length > 0 ? <Spinner /> : <></>}
-            releaseToRefreshContent={images.length > 0 ? <Spinner /> : <></>}
           >
             {images &&
               images.map((image, i) => {

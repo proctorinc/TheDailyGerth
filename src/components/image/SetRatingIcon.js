@@ -74,6 +74,7 @@ const SetRatingIcon = ({ image, readOnly }) => {
                 weight="duotone"
                 size={ICON_SIZE}
               />
+              <p>ok</p>
             </div>
           ) : readOnly && hasRated ? (
             <div

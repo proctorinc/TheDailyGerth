@@ -1,67 +1,81 @@
 import { useState } from "react";
 import Link from "next/link";
-import Header from "@components/ui/Header";
 import { useAuth } from "@hooks/useAuth";
-import ErrorAlert from "@components/ui/ErrorAlert";
+import SimpleHeader from "@components/ui/SimpleHeader";
+import ActivationConfirmationModal from "@components/auth/ActivationConfirmationModal";
+import LoadingScreen from "@components/ui/LoadingScreen";
 
 const ActivateAccount = () => {
+  const { sendActivationEmail, error, clearError } = useAuth();
   const [email, setEmail] = useState("");
-  const { sendActivationEmail, error } = useAuth();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div className="flex flex-col h-screen">
-      <Header />
+      <SimpleHeader />
       <div className="flex flex-col items-center justify-center flex-grow">
-        <ErrorAlert value={error} />
-        <div className="container card flex-shrink-0 w-full max-w-sm bg-base-100 sm:h-fit h-3/4">
-          <div className="card-body">
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Email</span>
-              </label>
-              <input
-                value={email}
-                type="text"
-                placeholder="email"
-                className={
-                  error
-                    ? "input input-bordered placeholder-error text-error input-error rounded-lg"
-                    : "input input-bordered rounded-lg"
-                }
-                onChange={(event) => setEmail(event.target.value)}
-              />
-              <label className="label">
-                <Link href="/login" className="label-text-alt link link-hover">
-                  Already have an account? Login
-                </Link>
-              </label>
-            </div>
-            <div htmlFor="my-modal" className="form-control mt-6">
-              <label
-                htmlFor="my-modal"
-                className="btn btn-primary modal-button rounded-lg"
-                onClick={() => sendActivationEmail(email)}
-              >
-                Activate
-              </label>
-            </div>
-          </div>
-        </div>
-        <input type="checkbox" id="my-modal" className="modal-toggle" />
-        <label htmlFor="my-modal" className="modal cursor-pointer">
-          <label className="modal-box relative" htmlFor="">
-            <h3 className="text-lg font-bold">Activation Email sent to:</h3>
-            <h3 className="text-lg font-bold">{email}</h3>
-            <p className="py-4">
-              If you do not see this email, please check your spam folder
-            </p>
-            <div className="modal-action">
-              <label htmlFor="my-modal" className="btn">
-                ok
-              </label>
-            </div>
+        <form
+          className="form-control w-full max-w-xs bg-base-100"
+          onSubmit={async (event) => {
+            event.preventDefault();
+            clearError();
+            const noError = await sendActivationEmail(email);
+            if (noError) {
+              setIsModalOpen(true);
+            }
+          }}
+        >
+          <h1 className="text-3xl text-center mb-8">Activate</h1>
+          <label className="label">
+            <span className="label-text text-base-300">Email</span>
           </label>
-        </label>
+          <input
+            value={email}
+            type="text"
+            placeholder="email"
+            className={
+              error
+                ? "input input-bordered text-error input-error rounded-lg"
+                : "input input-bordered border-neutral text-base-content placeholder-base-content rounded-lg bg-neutral"
+            }
+            onChange={(event) => setEmail(event.target.value)}
+          />
+          {error && (
+            <label className="label">
+              <span className="label-text-alt text-error">{error}</span>
+            </label>
+          )}
+          <label className="label">
+            <Link
+              href="/login"
+              className="label label-text-alt link link-hover"
+            >
+              <h3
+                className="text-sm mt-2 text-base-300"
+                onClick={() => {
+                  setLoading(true);
+                  clearError();
+                }}
+              >
+                Already have an account? Login
+              </h3>
+            </Link>
+          </label>
+          <input
+            type="submit"
+            className="btn btn-primary rounded-lg mt-3"
+            value="Activate"
+          />
+        </form>
+        <ActivationConfirmationModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
       </div>
     </div>
   );
