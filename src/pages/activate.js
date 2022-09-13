@@ -4,6 +4,7 @@ import { useAuth } from "@hooks/useAuth";
 import SimpleHeader from "@components/ui/SimpleHeader";
 import ActivationConfirmationModal from "@components/auth/ActivationConfirmationModal";
 import LoadingScreen from "@components/ui/LoadingScreen";
+import CardSkeleton from "@components/image/CardSkeleton";
 
 const ActivateAccount = () => {
   const { sendActivationEmail, error, clearError } = useAuth();
@@ -12,7 +13,7 @@ const ActivateAccount = () => {
   const [loading, setLoading] = useState(false);
 
   if (loading) {
-    return <LoadingScreen />;
+    return <LoadingScreen loadingComponent={<CardSkeleton />} />;
   }
 
   return (
@@ -21,10 +22,10 @@ const ActivateAccount = () => {
       <div className="flex flex-col items-center justify-center flex-grow">
         <form
           className="form-control w-full max-w-xs bg-base-100"
-          onSubmit={async (event) => {
+          onSubmit={(event) => {
             event.preventDefault();
             clearError();
-            const noError = await sendActivationEmail(email);
+            const noError = sendActivationEmail(email);
             if (noError) {
               setIsModalOpen(true);
             }

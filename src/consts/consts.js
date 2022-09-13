@@ -1,4 +1,4 @@
-export const IMAGES_PER_PAGE = 5;
+export const IMAGES_PER_PAGE = 3;
 export const LIMIT_ONE = 1;
 
 export const IMAGES_COLLECTION = "images";
@@ -8,6 +8,7 @@ export const FAVORITES_COLLECTION = "favorites";
 export const DATE_FIELD = "date";
 export const IMAGE_DATE_FIELD = "image_date";
 export const VALUE_FIELD = "value";
+export const USERNAME_FIELD = "username";
 
 export const DESC = "desc";
 

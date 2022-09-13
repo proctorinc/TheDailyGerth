@@ -9,7 +9,7 @@ const SetRatingIcon = ({ image, readOnly }) => {
   const [rating, setRating] = useState(0);
   const [hasRated, setHasRated] = useState(false);
   const [openRatings, setOpenRatings] = useState(false);
-  const { userRating, isRatingLoading } = useUserRatingSnapshot({
+  const userRating = useUserRatingSnapshot({
     imageData: image,
   });
   const [slideRating, setSlideRating] = useState(false);
@@ -74,7 +74,6 @@ const SetRatingIcon = ({ image, readOnly }) => {
                 weight="duotone"
                 size={ICON_SIZE}
               />
-              <p>ok</p>
             </div>
           ) : readOnly && hasRated ? (
             <div

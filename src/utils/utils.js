@@ -49,3 +49,29 @@ export const getFromLocalStorage = (key) => {
     return JSON.parse(value);
   }
 };
+
+export const formatTimestamp = (timestamp) => {
+  const ratingDate = timestamp.toDate();
+  return ratingDate.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+  });
+};
+
+export const calculateTimeSince = (timestamp) => {
+  const timeDiff = new Date(Date.now()) - timestamp.toDate();
+  const days = Math.floor(timeDiff / 86400000); // days
+  const hours = Math.floor((timeDiff % 86400000) / 3600000); // hours
+  const minutes = Math.round(((timeDiff % 86400000) % 3600000) / 60000); // minutes
+
+  if (days > 0) {
+    return `${days}d`;
+  }
+  if (hours > 0) {
+    return `${hours}h`;
+  } else if (minutes > 0) {
+    return `${minutes}m`;
+  } else {
+    return "now";
+  }
+};

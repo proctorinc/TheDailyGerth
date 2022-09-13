@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@hooks/useAuth";
 import Router from "next/router";
 import Link from "next/link";
-import { INVALID_EMAIL_ERROR } from "../consts/consts";
+import { INVALID_EMAIL_ERROR } from "@consts/consts";
 import SimpleHeader from "@components/ui/SimpleHeader";
 import LoadingScreen from "@components/ui/LoadingScreen";
 

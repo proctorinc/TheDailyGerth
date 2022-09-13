@@ -2,18 +2,18 @@ import Image from "next/image";
 import { PaperPlaneTilt } from "phosphor-react";
 import { getTodaysDate, prettyDateFormat } from "@utils/utils";
 import SetRatingIcon from "./SetRatingIcon";
-import RatingViewCollapsible from "./RatingViewCollapsible";
+import RatingsView from "./RatingsView";
 import ToggleFavoritedIcon from "./ToggleFavoritedIcon";
 import { ICON_SIZE } from "@consts/consts";
 
-const ImageCard = ({ image }) => {
+const Card = ({ image }) => {
   const formattedDate = prettyDateFormat(image.date);
   var ratio = 1;
   const readOnly = image.date != getTodaysDate();
 
   const handleSharing = async () => {
     const data = {
-      url: `thedailygerth.web.app/daily?${image.date}/#${image.date}`,
+      url: `/?${image.date}/#${image.date}`,
       text: `The Daily Gerth: ${formattedDate}`,
     };
     if (navigator.share === undefined) {
@@ -58,10 +58,10 @@ const ImageCard = ({ image }) => {
       </div>
       <div className="card-content px-2 text-sm">
         <h2 className="card-title text-md">{formattedDate}</h2>
-        <RatingViewCollapsible image={image} />
+        <RatingsView image={image} />
       </div>
     </div>
   );
 };
 
-export default ImageCard;
+export default Card;

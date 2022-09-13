@@ -1,9 +1,9 @@
 import Spinner from "@components/ui/Spinner";
 
-const LoadingScreen = () => {
+const LoadingScreen = ({ loadingComponent }) => {
   return (
     <div className="flex flex-col justify-center h-screen">
-      <Spinner size="lg" />
+      {loadingComponent ? loadingComponent : <Spinner size="lg" />}
     </div>
   );
 };

@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useAuth } from "@hooks/useAuth";
-import AuthRoute from "@components/flow/AuthRoute";
-import Header from "@components/ui/Header";
-import Spinner from "@components/ui/Spinner";
 import {
   fetchFavoritedImageCount,
   fetchFavoritedImagesAfter,
 } from "@api/firestore";
+import { useAuth } from "@hooks/useAuth";
+import AuthRoute from "@components/flow/AuthRoute";
+import Header from "@components/ui/Header";
+import Spinner from "@components/ui/Spinner";
 import CheckLoading from "@components/flow/CheckLoading";
-import Image from "next/image";
 import Container from "@components/ui/Container";
+import { UserCircle } from "phosphor-react";
 
 const Profile = () => {
   const { currentUser } = useAuth();
@@ -22,26 +23,21 @@ const Profile = () => {
     setNumberOfImages(await fetchFavoritedImageCount());
   };
 
-  const getFavoritedImages = async () => {
+  const getInitialImages = async () => {
     setImages(await fetchFavoritedImagesAfter());
   };
 
   const getNextImages = async () => {
     const lastViewedImage = images[images.length - 1];
-    const newImages = await fetchFavoritedImagesAfter(lastViewedImage);
+    console.log("LVI:", lastViewedImage);
+    const newImages = await fetchFavoritedImagesAfter(
+      lastViewedImage.image_date
+    );
     setImages((old) => [...old, ...newImages]);
   };
 
-  const renderEndMessage = (
-    <div className="w-full text-center pt-10">
-      <div className="badge badge-outline rounded-lg">
-        No more cats to see :(
-      </div>
-    </div>
-  );
-
   useEffect(() => {
-    getFavoritedImages();
+    getInitialImages();
     getNumberOfFavoritedImages();
     setLoading(false);
   }, []);
@@ -54,17 +50,20 @@ const Profile = () => {
           isLoading={loading}
           renderOnLoading={<Spinner size="lg" />}
         >
+          <div className="flex align-center justify-center w-full h-1/4">
+            <UserCircle size={96} weight="thin" />
+          </div>
           <div className="text-center text-xl">
             {currentUser.displayName}&apos;s Favorites
           </div>
           <InfiniteScroll
-            className="pb-96 pt-10"
+            className="pb-32"
             dataLength={images.length}
             next={getNextImages}
             hasMore={images.length < numberOfImages}
             loader={<Spinner size={"lg"} />}
           >
-            <div className="grid grid-cols-3 gap-1 pt-10">
+            <div className="grid grid-cols-3 gap-1 pt-10 p-2">
               {images &&
                 images.map((favorited, i) => {
                   const image = {

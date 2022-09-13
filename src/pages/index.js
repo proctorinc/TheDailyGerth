@@ -3,17 +3,16 @@ import { useRouter } from "next/router";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {
   fetchImageCount,
-  fetchTodaysImage,
+  fetchImagesThroughDate,
   fetchImagesAfter,
 } from "@api/firestore";
 import AuthRoute from "@components/flow/AuthRoute";
 import CheckLoading from "@components/flow/CheckLoading";
 import Header from "@components/ui/Header";
-import Spinner from "@components/ui/Spinner";
-import ImageCard from "@components/image/ImageCard";
+import Card from "@components/image/Card";
 import CountdownTimer from "@components/home/CountdownTimer";
 import Container from "@components/ui/Container";
-import ImageCardLoading from "@components/image/ImageCardLoading";
+import CardSkeleton from "@components/image/CardSkeleton";
 
 export default function Home() {
   const router = useRouter();
@@ -26,11 +25,9 @@ export default function Home() {
     setNumberOfImages(await fetchImageCount());
   };
 
-  const getTodaysImage = async () => {
-    const todaysImage = await fetchTodaysImage();
-    if (todaysImage != null) {
-      setImages([todaysImage]);
-    }
+  const getInitialImages = async () => {
+    const initialImages = await fetchImagesThroughDate(date);
+    setImages(initialImages);
   };
 
   const getNextImages = async () => {
@@ -47,32 +44,42 @@ export default function Home() {
     </div>
   );
 
+  // const imageRef = useRef(null);
+
+  // const scrollToBottom = () => {
+  //   console.log("Scrolling!");
+  //   console.log("offset:", imageRef.offsetTop);
+  //   window.scrollTo({
+  //     top: imageRef.offsetTop,
+  //     left: 0,
+  //     behavior: "smooth",
+  //   });
+  // };
+
   useEffect(() => {
-    getTodaysImage();
+    getInitialImages();
     getNumberOfImages();
     setLoading(false);
+    // scrollToBottom();
   }, []);
 
   return (
     <AuthRoute>
       <Header />
       <Container>
-        <CheckLoading
-          isLoading={loading}
-          renderOnLoading={<ImageCardLoading />} //<Spinner size="lg" />}
-        >
+        <CheckLoading isLoading={loading} renderOnLoading={<CardSkeleton />}>
           <CountdownTimer />
           <InfiniteScroll
             className="pb-40"
             dataLength={images.length}
             next={getNextImages}
             hasMore={images.length < numberOfImages}
-            loader={<ImageCardLoading />}
+            loader={<CardSkeleton />}
             endMessage={renderEndMessage}
           >
             {images &&
               images.map((image, i) => {
-                return <ImageCard key={i} image={image} />;
+                return <Card key={i} image={image} />;
               })}
           </InfiniteScroll>
         </CheckLoading>

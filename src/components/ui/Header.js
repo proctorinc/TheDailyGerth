@@ -1,11 +1,15 @@
-import { useState } from "react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { useAuth } from "@hooks/useAuth";
 import useRatingsSnapshot from "@hooks/useRatingsSnapshot";
 import { Bell, UserCircle } from "phosphor-react";
 import { ICON_SIZE } from "@consts/consts";
-import { getTodaysDateSimple, getTodaysDate } from "@utils/utils";
+import {
+  getTodaysDateSimple,
+  getTodaysDate,
+  calculateTimeSince,
+  formatTimestamp,
+} from "@utils/utils";
 
 const Header = () => {
   const { handleLogout, currentUser, clearError } = useAuth();
@@ -36,17 +40,21 @@ const Header = () => {
             className="menu rounded-lg dropdown-content mt-3 mx-1 shadow bg-base-100 rounded-box w-64 bg-opacity-75 backdrop-blur-sm"
           >
             <li>
-              <a className="justify-between">
-                New Daily Gerth!
-                <span className="badge bg-primary rounded-lg">{today}</span>
-              </a>
+              <Link href="/">
+                <a className="justify-between">
+                  New Daily Gerth!
+                  <span className="badge bg-primary rounded-lg">{today}</span>
+                </a>
+              </Link>
             </li>
             {ratings.map((userRating) => {
               return (
                 <li key={userRating.username}>
                   <a>
                     {userRating.username} rated today
-                    {/* <span className="badge bg-neutral rounded-lg">{calculateTimeSince(userRating.timestamp)}</span> */}
+                    <span className="badge bg-neutral rounded-lg">
+                      {calculateTimeSince(userRating.timestamp)}
+                    </span>
                   </a>
                 </li>
               );

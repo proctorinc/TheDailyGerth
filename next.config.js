@@ -5,8 +5,8 @@ const nextConfig = {
   swcMinify: true,
   images: {
     domains: ["firebasestorage.googleapis.com"],
-    loader: "akamai",
-    path: "",
+    // loader: "akamai",
+    // path: ".",
   },
 };
 
