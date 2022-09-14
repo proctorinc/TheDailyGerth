@@ -31,6 +31,7 @@ export default function Home() {
   };
 
   const getNextImages = async () => {
+    console.log("Getting next images...");
     const lastViewedImage = images[images.length - 1];
     const newImages = await fetchImagesAfter(lastViewedImage);
     setImages((old) => [...old, ...newImages]);
@@ -61,6 +62,8 @@ export default function Home() {
     getNumberOfImages();
     setLoading(false);
     // scrollToBottom();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

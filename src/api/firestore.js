@@ -199,10 +199,11 @@ export const fetchUserDisplayNameFromFirestore = async () => {
 export const fetchFavoritedImageCount = async () => {
   const username = auth.currentUser.displayName;
   const imagesRef = collection(db, FAVORITES_COLLECTION);
+  console.log(`${USERNAME_FIELD} == ${username}`);
 
   const q = query(imagesRef, where(USERNAME_FIELD, "==", username));
 
-  const querySnapshot = await getDocs(imagesRef);
+  const querySnapshot = await getDocs(q);
 
   return querySnapshot.size;
 };

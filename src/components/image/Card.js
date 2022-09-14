@@ -13,7 +13,7 @@ const Card = ({ image }) => {
 
   const handleSharing = async () => {
     const data = {
-      url: `/?${image.date}/#${image.date}`,
+      url: `/?${image.date}`,
       text: `The Daily Gerth: ${formattedDate}`,
     };
     if (navigator.share === undefined) {

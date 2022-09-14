@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
+import Router from "next/router";
 import {
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
@@ -44,6 +45,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const handleLogout = async () => {
+    Router.push("/login");
     try {
       signOut(auth);
       reload();

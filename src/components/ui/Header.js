@@ -10,9 +10,11 @@ import {
   calculateTimeSince,
   formatTimestamp,
 } from "@utils/utils";
+import { useRouter } from "next/router";
 
 const Header = () => {
   const { handleLogout, currentUser, clearError } = useAuth();
+  const router = useRouter();
   const { theme, setTheme } = useTheme();
   const { ratings, ratingsLoading } = useRatingsSnapshot({
     imageData: {
@@ -43,7 +45,9 @@ const Header = () => {
               <Link href="/">
                 <a className="justify-between">
                   New Daily Gerth!
-                  <span className="badge bg-primary rounded-lg">{today}</span>
+                  <span className="badge bg-primary text-black rounded-lg">
+                    {today}
+                  </span>
                 </a>
               </Link>
             </li>
@@ -82,12 +86,15 @@ const Header = () => {
               className="menu rounded-lg dropdown-content mt-3 mx-1 shadow bg-base-100 rounded-box w-40 bg-opacity-75 backdrop-blur-sm"
             >
               <li>
-                <Link href="/profile">
-                  <a className="justify-between">
-                    Profile
-                    {/* <span className="badge">New Favorites!</span> */}
-                  </a>
-                </Link>
+                {router.pathname === "/" ? (
+                  <Link href="/profile">
+                    <a className="justify-between">Profile</a>
+                  </Link>
+                ) : (
+                  <Link href="/">
+                    <a className="justify-between">Home</a>
+                  </Link>
+                )}
               </li>
               <li>
                 <a className="justify-between">

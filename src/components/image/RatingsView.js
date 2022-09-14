@@ -44,7 +44,7 @@ const RatingsView = ({ image }) => {
                     weight="regular"
                     size={ICON_SIZE}
                   />
-                  <div>{userRating.username}:</div>
+                  <div>{userRating.username}</div>
                   <div className="flex pl-3">
                     <Rating
                       initialRating={userRating.value}

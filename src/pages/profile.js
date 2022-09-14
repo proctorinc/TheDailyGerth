@@ -29,7 +29,6 @@ const Profile = () => {
 
   const getNextImages = async () => {
     const lastViewedImage = images[images.length - 1];
-    console.log("LVI:", lastViewedImage);
     const newImages = await fetchFavoritedImagesAfter(
       lastViewedImage.image_date
     );
@@ -42,6 +41,10 @@ const Profile = () => {
     setLoading(false);
   }, []);
 
+  useEffect(() => {
+    console.log(numberOfImages);
+  }, [numberOfImages]);
+
   return (
     <AuthRoute>
       <Header />
@@ -50,7 +53,7 @@ const Profile = () => {
           isLoading={loading}
           renderOnLoading={<Spinner size="lg" />}
         >
-          <div className="flex align-center justify-center w-full h-1/4">
+          <div className="flex align-center justify-center w-full">
             <UserCircle size={96} weight="thin" />
           </div>
           <div className="text-center text-xl">
@@ -84,6 +87,13 @@ const Profile = () => {
                 })}
             </div>
           </InfiniteScroll>
+          {images.length == 0 && (
+            <div className="w-full text-center pt-10 text-sm text-base-200">
+              <div className="badge badge-outline rounded-lg">
+                Favorite an image to see it here!
+              </div>
+            </div>
+          )}
         </CheckLoading>
       </Container>
     </AuthRoute>
