@@ -5,6 +5,7 @@ import Link from "next/link";
 import { INVALID_EMAIL_ERROR } from "@consts/consts";
 import SimpleHeader from "@components/ui/SimpleHeader";
 import LoadingScreen from "@components/ui/LoadingScreen";
+import Container from "@components/ui/Container";
 
 const Login = () => {
   const { currentUser, handleLogin, error, clearError } = useAuth();
@@ -26,9 +27,9 @@ const Login = () => {
   return (
     <div className="flex flex-col h-screen">
       <SimpleHeader />
-      <div className="flex flex-col items-center justify-center flex-grow">
+      <Container size="xs" center>
         <form
-          className="form-control w-full max-w-xs bg-base-100"
+          className="form-control"
           onSubmit={(event) => {
             event.preventDefault();
             clearError();
@@ -65,7 +66,7 @@ const Login = () => {
             className={
               error
                 ? "input input-bordered text-error input-error rounded-lg"
-                : "input input-bordered border-neutral text-base-content placeholder-base-content rounded-lg bg-neutral"
+                : "input input-bordered bg-neutral border-neutral text-base-content placeholder-base-content rounded-lg"
             }
             onChange={(event) => setPassword(event.target.value)}
           />
@@ -93,7 +94,7 @@ const Login = () => {
             value="Sign In"
           />
         </form>
-      </div>
+      </Container>
     </div>
   );
 };

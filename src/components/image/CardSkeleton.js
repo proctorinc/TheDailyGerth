@@ -10,10 +10,10 @@ const CardSkeleton = () => {
           <Heart
             size={ICON_SIZE}
             weight="fill"
-            className="my-1 text-base-200 shimmering"
+            className="my-1 text-base-200"
           />
           <PaperPlaneTilt
-            className="m-1 text-base-200 shimmering"
+            className="m-1 text-base-200"
             weight="fill"
             size={ICON_SIZE}
           />
@@ -22,7 +22,7 @@ const CardSkeleton = () => {
           <Star
             size={ICON_SIZE}
             weight="fill"
-            className="my-1 text-base-200 shimmering"
+            className="my-1 text-base-200 shimmering-fast"
           />
         </div>
       </div>

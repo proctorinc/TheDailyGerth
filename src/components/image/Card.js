@@ -29,16 +29,20 @@ const Card = ({ image }) => {
   };
 
   return (
-    <div id={image.date} className="card p-2">
+    <div id={image.date} className="card p-1">
       <div className="w-full">
         <Image
           id={image.url}
           alt={"Image: " + image.date}
           src={image.url}
-          width={window.innerWidth}
-          height={window.innerWidth}
+          // layout="fill"
+          // sizes="100vw"
+          width="100%" //{window.innerWidth}
+          height="100%" //{window.innerWidth}
           layout="responsive"
-          className="relative rounded-lg bg-neutral"
+          className="rounded-lg bg-neutral object-cover"
+          placeholder="blur"
+          blurDataURL={image.url}
           // onLoadingComplete={({ naturalWidth, naturalHeight }) =>
           //   (ratio = naturalWidth / naturalHeight)
           // }

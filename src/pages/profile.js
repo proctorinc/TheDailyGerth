@@ -41,14 +41,10 @@ const Profile = () => {
     setLoading(false);
   }, []);
 
-  useEffect(() => {
-    console.log(numberOfImages);
-  }, [numberOfImages]);
-
   return (
     <AuthRoute>
-      <Header />
       <Container>
+        <Header />
         <CheckLoading
           isLoading={loading}
           renderOnLoading={<Spinner size="lg" />}
@@ -66,7 +62,7 @@ const Profile = () => {
             hasMore={images.length < numberOfImages}
             loader={<Spinner size={"lg"} />}
           >
-            <div className="grid grid-cols-3 gap-1 pt-10 p-2">
+            <div className="grid grid-cols-3 gap-1 pt-10">
               {images &&
                 images.map((favorited, i) => {
                   const image = {
@@ -81,7 +77,9 @@ const Profile = () => {
                       height={100}
                       width={100}
                       layout="responsive"
-                      className="relative rounded-md"
+                      className="relative rounded-sm"
+                      placeholder="blur"
+                      blurDataURL={image.url}
                     />
                   );
                 })}

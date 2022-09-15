@@ -10,6 +10,9 @@
 
 @layer components {
     .shimmering {
-        @apply relative isolate overflow-hidden before:absolute before:inset-0 before:-translate-y-full before:animate-shimmer before:bg-gradient-to-b before:from-transparent before:via-base-300/10 before:to-transparent before:border-t before:border-base-200
+        @apply relative isolate overflow-hidden before:absolute before:inset-0 before:-translate-y-full before:animate-shimmer before:bg-gradient-to-b before:from-transparent before:via-base-300/10 before:to-transparent before:border-t before:border-base-300/10
+    }
+    .shimmering-fast {
+        @apply relative isolate overflow-hidden before:absolute before:inset-0 before:-translate-y-full before:animate-shimmer-fast before:bg-gradient-to-b before:from-transparent before:via-base-300/10 before:to-transparent before:border-t before:border-base-300/10
     }
 }

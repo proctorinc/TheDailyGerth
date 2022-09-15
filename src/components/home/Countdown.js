@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { getTodaysDate } from "@utils/utils";
 import useUserRatingSnapshot from "@hooks/useUserRatingSnapshot";
+import CountDownSkeleton from "./CountDownSkeleton";
 
-const CountdownTimer = () => {
-  const [countdown, setCountdown] = useState("0h 0m 0s");
+const Countdown = () => {
+  const [countdown, setCountdown] = useState();
   const userRating = useUserRatingSnapshot({
     imageData: { date: getTodaysDate() },
   });
@@ -34,6 +35,10 @@ const CountdownTimer = () => {
     );
   }, 1000);
 
+  if (!countdown) {
+    return <CountDownSkeleton />;
+  }
+
   if (userRating?.value) {
     return (
       <div className="w-full text-center pb-3">
@@ -47,4 +52,4 @@ const CountdownTimer = () => {
   return <></>;
 };
 
-export default CountdownTimer;
+export default Countdown;

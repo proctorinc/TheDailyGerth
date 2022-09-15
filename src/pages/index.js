@@ -10,7 +10,7 @@ import AuthRoute from "@components/flow/AuthRoute";
 import CheckLoading from "@components/flow/CheckLoading";
 import Header from "@components/ui/Header";
 import Card from "@components/image/Card";
-import CountdownTimer from "@components/home/CountdownTimer";
+import Countdown from "@components/home/Countdown";
 import Container from "@components/ui/Container";
 import CardSkeleton from "@components/image/CardSkeleton";
 
@@ -31,7 +31,6 @@ export default function Home() {
   };
 
   const getNextImages = async () => {
-    console.log("Getting next images...");
     const lastViewedImage = images[images.length - 1];
     const newImages = await fetchImagesAfter(lastViewedImage);
     setImages((old) => [...old, ...newImages]);
@@ -44,6 +43,8 @@ export default function Home() {
       </div>
     </div>
   );
+
+  const renderCardSkeleton = <CardSkeleton />;
 
   // const imageRef = useRef(null);
 
@@ -70,14 +71,14 @@ export default function Home() {
     <AuthRoute>
       <Header />
       <Container>
-        <CheckLoading isLoading={loading} renderOnLoading={<CardSkeleton />}>
-          <CountdownTimer />
+        <CheckLoading isLoading={loading} renderOnLoading={renderCardSkeleton}>
+          <Countdown />
           <InfiniteScroll
             className="pb-40"
             dataLength={images.length}
             next={getNextImages}
             hasMore={images.length < numberOfImages}
-            loader={<CardSkeleton />}
+            loader={renderCardSkeleton}
             endMessage={renderEndMessage}
           >
             {images &&

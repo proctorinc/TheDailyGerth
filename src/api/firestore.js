@@ -10,6 +10,7 @@ import {
   doc,
   setDoc,
   getDoc,
+  addDoc,
   deleteDoc,
   onSnapshot,
   Timestamp,
@@ -19,6 +20,7 @@ import {
   IMAGES_COLLECTION,
   RATINGS_COLLECTION,
   FAVORITES_COLLECTION,
+  FEEDBACK_COLLECTION,
   IMAGE_DATE_FIELD,
   USERNAME_FIELD,
   VALUE_FIELD,
@@ -60,6 +62,7 @@ export const fetchImagesThroughDate = async (date) => {
   const q = query(
     imagesRef,
     where(DATE_FIELD, ">=", date ? date : today),
+    where(DATE_FIELD, "<=", today),
     orderBy(DATE_FIELD, DESC)
   );
   const querySnapshot = await getDocs(q);
@@ -199,7 +202,6 @@ export const fetchUserDisplayNameFromFirestore = async () => {
 export const fetchFavoritedImageCount = async () => {
   const username = auth.currentUser.displayName;
   const imagesRef = collection(db, FAVORITES_COLLECTION);
-  console.log(`${USERNAME_FIELD} == ${username}`);
 
   const q = query(imagesRef, where(USERNAME_FIELD, "==", username));
 
@@ -238,4 +240,13 @@ export const fetchFavoritedImagesAfter = async (date) => {
   });
 
   return images;
+};
+
+export const sendFeedback = async (text) => {
+  const username = auth.currentUser.displayName;
+  const feedbackRef = collection(db, FEEDBACK_COLLECTION);
+  addDoc(feedbackRef, {
+    username: username,
+    text: text,
+  });
 };

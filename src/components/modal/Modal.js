@@ -1,4 +1,4 @@
-const ActivationConfirmationModal = ({ isOpen, onClose }) => {
+const Modal = ({ isOpen, onClose, header, body, button }) => {
   if (!isOpen) {
     return <></>;
   }
@@ -6,13 +6,11 @@ const ActivationConfirmationModal = ({ isOpen, onClose }) => {
   return (
     <label className="modal modal-open cursor-pointer">
       <label className="modal-box relative rounded-lg">
-        <h3 className="text-lg font-bold">Activation Email Sent</h3>
-        <p className="py-4">
-          If you do not see this email, please check your spam folder
-        </p>
+        <h3 className="text-lg font-bold">{header}</h3>
+        <p className="py-4">{body}</p>
         <div className="modal-action">
           <label className="btn rounded-lg" onClick={onClose}>
-            ok
+            {button}
           </label>
         </div>
       </label>
@@ -20,4 +18,4 @@ const ActivationConfirmationModal = ({ isOpen, onClose }) => {
   );
 };
 
-export default ActivationConfirmationModal;
+export default Modal;

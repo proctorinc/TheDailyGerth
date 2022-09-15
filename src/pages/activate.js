@@ -2,9 +2,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@hooks/useAuth";
 import SimpleHeader from "@components/ui/SimpleHeader";
-import ActivationConfirmationModal from "@components/auth/ActivationConfirmationModal";
+import ActivationConfirmationModal from "@components/modal/ActivationConfirmationModal";
 import LoadingScreen from "@components/ui/LoadingScreen";
-import CardSkeleton from "@components/image/CardSkeleton";
+import Container from "@components/ui/Container";
 
 const ActivateAccount = () => {
   const { sendActivationEmail, error, clearError } = useAuth();
@@ -13,15 +13,15 @@ const ActivateAccount = () => {
   const [loading, setLoading] = useState(false);
 
   if (loading) {
-    return <LoadingScreen loadingComponent={<CardSkeleton />} />;
+    return <LoadingScreen />;
   }
 
   return (
     <div className="flex flex-col h-screen">
       <SimpleHeader />
-      <div className="flex flex-col items-center justify-center flex-grow">
+      <Container size="xs" center>
         <form
-          className="form-control w-full max-w-xs bg-base-100"
+          className="form-control"
           onSubmit={(event) => {
             event.preventDefault();
             clearError();
@@ -77,7 +77,7 @@ const ActivateAccount = () => {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
         />
-      </div>
+      </Container>
     </div>
   );
 };
