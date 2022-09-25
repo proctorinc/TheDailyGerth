@@ -12,6 +12,7 @@ import Spinner from "@components/ui/Spinner";
 import CheckLoading from "@components/flow/CheckLoading";
 import Container from "@components/ui/Container";
 import { UserCircle } from "phosphor-react";
+import Link from "next/link";
 
 const Profile = () => {
   const { currentUser } = useAuth();
@@ -43,8 +44,8 @@ const Profile = () => {
 
   return (
     <AuthRoute>
+      <Header />
       <Container>
-        <Header />
         <CheckLoading
           isLoading={loading}
           renderOnLoading={<Spinner size="lg" />}
@@ -70,17 +71,18 @@ const Profile = () => {
                     url: favorited.image_url,
                   };
                   return (
-                    <Image
-                      key={i}
-                      src={image.url}
-                      alt={"Image: " + image.date}
-                      height={100}
-                      width={100}
-                      layout="responsive"
-                      className="relative rounded-sm"
-                      placeholder="blur"
-                      blurDataURL={image.url}
-                    />
+                    <Link key={i} href={`/date/${image.date}`}>
+                      <Image
+                        src={image.url}
+                        alt={"Image: " + image.date}
+                        height={100}
+                        width={100}
+                        layout="responsive"
+                        className="relative rounded-sm"
+                        placeholder="blur"
+                        blurDataURL={image.url}
+                      />
+                    </Link>
                   );
                 })}
             </div>

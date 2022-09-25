@@ -31,9 +31,7 @@ const Feedback = () => {
           >
             <h1 className="text-3xl text-center mb-8">Feedback</h1>
             <label className="label">
-              <span className="label-text text-base-200">
-                Enter feedback about the app
-              </span>
+              <span className="label-text">What could be better?</span>
             </label>
             <textarea
               className={
@@ -41,7 +39,7 @@ const Feedback = () => {
                   ? "textarea text-error border-error text-base-content placeholder-base-content rounded-lg"
                   : "textarea border-neutral text-base-content placeholder-base-content rounded-lg bg-neutral"
               }
-              placeholder="What could be better?"
+              placeholder="..."
               value={text}
               onChange={(event) => setText(event.target.value)}
             />

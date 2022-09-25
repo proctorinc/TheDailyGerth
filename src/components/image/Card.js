@@ -8,12 +8,11 @@ import { ICON_SIZE } from "@consts/consts";
 
 const Card = ({ image }) => {
   const formattedDate = prettyDateFormat(image.date);
-  var ratio = 1;
   const readOnly = image.date != getTodaysDate();
 
   const handleSharing = async () => {
     const data = {
-      url: `/?${image.date}`,
+      url: `/date/${image.date}`,
       text: `The Daily Gerth: ${formattedDate}`,
     };
     if (navigator.share === undefined) {
@@ -35,17 +34,12 @@ const Card = ({ image }) => {
           id={image.url}
           alt={"Image: " + image.date}
           src={image.url}
-          // layout="fill"
-          // sizes="100vw"
-          width="100%" //{window.innerWidth}
-          height="100%" //{window.innerWidth}
+          width="100%"
+          height="100%"
           layout="responsive"
           className="rounded-lg bg-neutral object-cover"
           placeholder="blur"
           blurDataURL={image.url}
-          // onLoadingComplete={({ naturalWidth, naturalHeight }) =>
-          //   (ratio = naturalWidth / naturalHeight)
-          // }
         />
       </div>
       <div className="card-actions flow-root mt-1 mb-0">

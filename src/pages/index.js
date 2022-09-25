@@ -7,7 +7,6 @@ import {
   fetchImagesAfter,
 } from "@api/firestore";
 import AuthRoute from "@components/flow/AuthRoute";
-import CheckLoading from "@components/flow/CheckLoading";
 import Header from "@components/ui/Header";
 import Card from "@components/image/Card";
 import Countdown from "@components/home/Countdown";
@@ -28,6 +27,7 @@ export default function Home() {
   const getInitialImages = async () => {
     const initialImages = await fetchImagesThroughDate(date);
     setImages(initialImages);
+    setLoading(false);
   };
 
   const getNextImages = async () => {
@@ -44,25 +44,9 @@ export default function Home() {
     </div>
   );
 
-  const renderCardSkeleton = <CardSkeleton />;
-
-  // const imageRef = useRef(null);
-
-  // const scrollToBottom = () => {
-  //   console.log("Scrolling!");
-  //   console.log("offset:", imageRef.offsetTop);
-  //   window.scrollTo({
-  //     top: imageRef.offsetTop,
-  //     left: 0,
-  //     behavior: "smooth",
-  //   });
-  // };
-
   useEffect(() => {
     getInitialImages();
     getNumberOfImages();
-    setLoading(false);
-    // scrollToBottom();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -71,22 +55,25 @@ export default function Home() {
     <AuthRoute>
       <Header />
       <Container>
-        <CheckLoading isLoading={loading} renderOnLoading={renderCardSkeleton}>
-          <Countdown />
-          <InfiniteScroll
-            className="pb-40"
-            dataLength={images.length}
-            next={getNextImages}
-            hasMore={images.length < numberOfImages}
-            loader={renderCardSkeleton}
-            endMessage={renderEndMessage}
-          >
-            {images &&
-              images.map((image, i) => {
+        {!loading && images.length == 0 ? (
+          <div className="text-center">Error loading today&apos;s images</div>
+        ) : (
+          <>
+            <Countdown />
+            <InfiniteScroll
+              className="pb-40"
+              dataLength={images.length}
+              next={getNextImages}
+              hasMore={images.length < numberOfImages}
+              loader={<CardSkeleton />}
+              endMessage={renderEndMessage}
+            >
+              {images.map((image, i) => {
                 return <Card key={i} image={image} />;
               })}
-          </InfiniteScroll>
-        </CheckLoading>
+            </InfiniteScroll>
+          </>
+        )}
       </Container>
     </AuthRoute>
   );

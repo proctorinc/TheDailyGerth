@@ -74,6 +74,19 @@ export const fetchImagesThroughDate = async (date) => {
   return images;
 };
 
+export const fetchImageByDate = async (date) => {
+  const imagesRef = collection(db, IMAGES_COLLECTION);
+  const q = query(imagesRef, where(DATE_FIELD, "==", date), limit(1));
+  const querySnapshot = await getDocs(q);
+  let image = null;
+
+  querySnapshot.forEach((doc) => {
+    image = doc.data();
+  });
+
+  return image;
+};
+
 export const fetchImagesAfter = async (imageData) => {
   if (!imageData) {
     return [];
