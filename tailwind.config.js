@@ -30,6 +30,7 @@ module.exports = {
         },
       },
       animation: {
+        pulse: "pulse 1s infinite",
         wiggle: "wiggle 200ms ease-in-out",
         flash: "flash 0.5s cubic-bezier(0, 0, 0.2, 1)",
         shimmer: "shimmer 1s infinite",

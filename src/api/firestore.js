@@ -233,7 +233,7 @@ export const fetchFavoritedImagesAfter = async (date) => {
       imagesRef,
       orderBy(IMAGE_DATE_FIELD, DESC),
       startAfter(date),
-      limit(IMAGES_PER_PAGE),
+      limit(3),
       where(USERNAME_FIELD, "==", username)
     );
   } else {
@@ -241,7 +241,7 @@ export const fetchFavoritedImagesAfter = async (date) => {
       imagesRef,
       orderBy(IMAGE_DATE_FIELD, DESC),
       where(USERNAME_FIELD, "==", username),
-      limit(9)
+      limit(3)
     );
   }
 

@@ -11,14 +11,17 @@ import Header from "@components/ui/Header";
 import Spinner from "@components/ui/Spinner";
 import CheckLoading from "@components/flow/CheckLoading";
 import Container from "@components/ui/Container";
-import { UserCircle } from "phosphor-react";
-import Link from "next/link";
+import ImageGridSkeleton from "@components/image/ImageGridSkeleton";
+import { Pencil, UserCircle } from "phosphor-react";
+import ImageCardModal from "@components/modal/ImageCardModal";
 
 const Profile = () => {
   const { currentUser } = useAuth();
   const [images, setImages] = useState([]);
   const [numberOfImages, setNumberOfImages] = useState();
   const [loading, setLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const getNumberOfFavoritedImages = async () => {
     setNumberOfImages(await fetchFavoritedImageCount());
@@ -36,6 +39,11 @@ const Profile = () => {
     setImages((old) => [...old, ...newImages]);
   };
 
+  const openModal = (image) => {
+    setSelectedImage(image);
+    setIsModalOpen(true);
+  };
+
   useEffect(() => {
     getInitialImages();
     getNumberOfFavoritedImages();
@@ -51,7 +59,13 @@ const Profile = () => {
           renderOnLoading={<Spinner size="lg" />}
         >
           <div className="flex align-center justify-center w-full">
-            <UserCircle size={96} weight="thin" />
+            <div className="indicator">
+              <Pencil
+                size={5}
+                className="btn btn-xs btn-circle btn-ghost indicator-item indicator-bottom"
+              />
+              <UserCircle size={96} weight="thin" />
+            </div>
           </div>
           <div className="text-center text-xl">
             {currentUser.displayName}&apos;s Favorites
@@ -61,7 +75,7 @@ const Profile = () => {
             dataLength={images.length}
             next={getNextImages}
             hasMore={images.length < numberOfImages}
-            loader={<Spinner size={"lg"} />}
+            loader={<ImageGridSkeleton />}
           >
             <div className="grid grid-cols-3 gap-1 pt-10">
               {images &&
@@ -71,18 +85,18 @@ const Profile = () => {
                     url: favorited.image_url,
                   };
                   return (
-                    <Link key={i} href={`/date/${image.date}`}>
-                      <Image
-                        src={image.url}
-                        alt={"Image: " + image.date}
-                        height={100}
-                        width={100}
-                        layout="responsive"
-                        className="relative rounded-sm"
-                        placeholder="blur"
-                        blurDataURL={image.url}
-                      />
-                    </Link>
+                    <Image
+                      src={image.url}
+                      alt={"Image: " + image.date}
+                      height={100}
+                      width={100}
+                      layout="responsive"
+                      className="relative rounded-md bg-neutral object-cover"
+                      placeholder="blur"
+                      blurDataURL={image.url}
+                      key={i}
+                      onClick={() => openModal(image)}
+                    />
                   );
                 })}
             </div>
@@ -95,6 +109,11 @@ const Profile = () => {
             </div>
           )}
         </CheckLoading>
+        <ImageCardModal
+          image={selectedImage}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
       </Container>
     </AuthRoute>
   );

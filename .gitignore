@@ -44,6 +44,8 @@ config.js
 .github/*
 .firebaserc
 
-server/cert/*
+cert/*
+*.crt
+*.key
 
 .env.local
